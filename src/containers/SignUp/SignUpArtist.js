@@ -1,9 +1,16 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import { Link, withRouter } from 'react-router-dom';
 import { Col, Row, Button, Form, FormGroup, Label, Input, FormText, Container } from 'reactstrap';
 
 import { withFirebase } from '../../components/Firebase';
 import * as ROUTES from '../../constants/routes';
+import ENV from '../../constants/environment/common.env';
+
+
+
+const RESOURCE = 'kmUsersFunctions/api/v1';
+const requestSignUp = payload => axios.post(ENV.apiUrl + `${RESOURCE}/signup`, payload);
 
 const SignUpPage = () => (
   <div>
@@ -48,25 +55,22 @@ class SignUpFormBase extends Component {
       passwordOne,
     } = this.state;
 
-    console.log('====>>>', this.state)
-
     this.props.firebase
       .doCreateUserWithEmailAndPassword(email, passwordOne)
       .then(authUser => {
-        // Create a user in your Firebase realtime database
-        this.props.firebase
-          .user(authUser.user.uid)
-          .set({
-            lastName,
-            firstName,
-            birthDate,
-            address,
-            city,
-            cp,
-            country,
-            username,
-            email,
-          })
+        requestSignUp({
+          uid: authUser.user.uid,
+          lastName,
+          firstName,
+          birthDate,
+          address,
+          city,
+          cp,
+          country,
+          username,
+          email,
+          typeAccount: 'art'
+        })
           .then(() => {
             this.setState({ ...INITIAL_STATE });
             this.props.history.push(ROUTES.HOME);
@@ -203,41 +207,6 @@ class SignUpFormBase extends Component {
         </Form>
         {error && <p>{error.message}</p>}
       </Container>
-      // <form >
-      //   <input
-      //     name="username"
-      //     value={username}
-      //     onChange={this.onChange}
-      //     type="text"
-      //     placeholder="Full Name"
-      //   />
-      //   <input
-      //     name="email"
-          // value={email}
-          // onChange={this.onChange}
-      //     type="text"
-      //     placeholder="Email Address"
-      //   />
-      //   <input
-      //     name="passwordOne"
-      //     value={passwordOne}
-      //     onChange={this.onChange}
-      //     type="password"
-      //     placeholder="Password"
-      //   />
-      //   <input
-      //     name="passwordTwo"
-      //     value={passwordTwo}
-      //     onChange={this.onChange}
-      //     type="password"
-      //     placeholder="Confirm Password"
-      //   />
-      //   <button >
-      //     
-      //   </button>
-
-      //   
-      // </form>
     );
   }
 }
