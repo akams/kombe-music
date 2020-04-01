@@ -19,6 +19,11 @@ const Landing = () => (
 				Learn React
         </a>
 		</header>
+    <footer>
+      <p>
+        <a href="/artist/signup">Inscription pour les artistes</a>
+      </p>
+    </footer>
   </div>
 );
 
