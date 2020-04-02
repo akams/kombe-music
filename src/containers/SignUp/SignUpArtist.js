@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Link, withRouter } from 'react-router-dom';
-import { Col, Row, Button, Form, FormGroup, Label, Input, FormText, Container } from 'reactstrap';
+import { Col, Row, Button, Form, FormGroup, Label, Input, Container } from 'reactstrap';
 
 import { withFirebase } from '../../components/Firebase';
 import * as ROUTES from '../../constants/routes';
@@ -117,91 +117,55 @@ class SignUpFormBase extends Component {
         <Form onSubmit={this.onSubmit}>
           <FormGroup>
             <Label for="lastName">Nom</Label>
-            <Input type="text" name="lastName" id="lastName" placeholder="Dupont"
-                            value={lastName}
-                            onChange={this.onChange}
-            />
+            <Input type="text" name="lastName" id="lastName" placeholder="Dupont" value={lastName} onChange={this.onChange} />
           </FormGroup>
           <FormGroup>
             <Label for="firstName">Prénom</Label>
-            <Input type="text" name="firstName" id="firstName" placeholder="Jean" 
-                            value={firstName}
-                            onChange={this.onChange}
-            />
+            <Input type="text" name="firstName" id="firstName" placeholder="Jean" value={firstName} onChange={this.onChange} />
           </FormGroup>
           <FormGroup>
             <Label for="birthDate">Date de naissance</Label>
-            <Input type="text" name="birthDate" id="birthDate" placeholder="01/01/1992"
-                            value={birthDate}
-                            onChange={this.onChange}
-            />
+            <Input type="text" name="birthDate" id="birthDate" placeholder="01/01/1992" value={birthDate} onChange={this.onChange} />
           </FormGroup>
           <FormGroup>
             <Label for="address">Adresse</Label>
-            <Input type="text" name="address" id="address" placeholder="3 rue jean"
-              value={address}
-              onChange={this.onChange}
-            />
+            <Input type="text" name="address" id="address" placeholder="3 rue jean" value={address} onChange={this.onChange} />
           </FormGroup>
           <Row form>
             <Col md={6}>
               <FormGroup>
                 <Label for="city">Ville</Label>
-                <Input type="text" name="city" id="city" placeholder="Libreville"
-                  value={city}
-                  onChange={this.onChange}
-                />
+                <Input type="text" name="city" id="city" placeholder="Libreville" value={city} onChange={this.onChange} />
               </FormGroup>
             </Col>
             <Col md={4}>
               <FormGroup>
                 <Label for="cp">Code postal</Label>
-                <Input type="text" name="cp" id="cp" placeholder="BP8999"
-                  value={cp}
-                  onChange={this.onChange}
-                />
+                <Input type="text" name="cp" id="cp" placeholder="BP8999" value={cp} onChange={this.onChange} />
               </FormGroup>
             </Col>
             <Col md={2}>
               <FormGroup>
                 <Label for="country">Pays</Label>
-                <Input type="text" name="country" id="country" placeholder="Gabon" 
-                  value={country}
-                  onChange={this.onChange}
-                />
+                <Input type="text" name="country" id="country" placeholder="Gabon" value={country} onChange={this.onChange} />
               </FormGroup>  
             </Col>
           </Row>
           <FormGroup>
             <Label for="email">Email</Label>
-            <Input type="email" name="email" id="email" placeholder="samuel-k@email.com"
-              value={email}
-              onChange={this.onChange}
-            />
+            <Input type="email" name="email" id="email" placeholder="samuel-k@email.com" value={email} onChange={this.onChange} />
           </FormGroup>
           <FormGroup>
             <Label for="username">username</Label>
-            <Input type="text" name="username" id="username" placeholder="samuel-k"
-              value={username}
-              onChange={this.onChange}
-            />
+            <Input type="text" name="username" id="username" placeholder="samuel-k" value={username} onChange={this.onChange} />
           </FormGroup>
           <FormGroup>
             <Label for="examplePassword">Password</Label>
-            <Input 
-              type="password" name="passwordOne" id="examplePassword"
-              value={passwordOne}
-              onChange={this.onChange}
-              type="password"
-            />
+            <Input type="password" name="passwordOne" id="examplePassword" value={passwordOne} onChange={this.onChange} type="password" />
           </FormGroup>
           <FormGroup>
             <Label for="passwordTwo">Confirmer password</Label>
-            <Input 
-              type="password" name="passwordTwo" id="passwordTwo"
-              value={passwordTwo}
-              onChange={this.onChange}
-            />
+            <Input type="password" name="passwordTwo" id="passwordTwo" value={passwordTwo} onChange={this.onChange} />
           </FormGroup>
           <Button disabled={isInvalid} type="submit">Sign Up</Button>
         </Form>
