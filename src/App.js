@@ -1,53 +1,46 @@
-import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import React, { Component } from 'react';
+import { createStore, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import { Container } from 'reactstrap';
+import { routerMiddleware, ConnectedRouter } from 'connected-react-router';
+import { createBrowserHistory } from 'history';
 
-import SideMenu from './components/SideMenu'
-import Navigation from './components/Navigation';
-import PasswordForgetPage from './components/PasswordForget';
-
-import LandingPage from './containers/Landing';
-import SignUpPage from './containers/SignUp';
-import SignInPage from './containers/SignIn';
-import HomePage from './containers/Home';
-import AccountPage from './containers/Account';
-import AdminPage from './containers/Admin';
-import UploadFile from './containers/User/UploadFile';
-
-/** ARTIST */
-import SignUpArtist from './containers/SignUp/SignUpArtist';
-
-import * as ROUTES from './constants/routes';
-import { withAuthentication } from './components/Session';
-
+import Main from './components/Routes/Main';
+import rootReducer from './redux/reducers';
 
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <Router>
-        <div>
-          {/* <SideMenu /> */}
-          <Navigation />
+const REACT_APP_DEVTOOLS = process.env.REACT_APP_DEVTOOLS
+  ? JSON.parse(process.env.REACT_APP_DEVTOOLS)
+  : false;
 
-          <hr />
+const history = createBrowserHistory();
 
-          <Route exact path={ROUTES.LANDING} component={LandingPage} />
-          <Route exact path={ROUTES.SIGN_UP} component={SignUpPage} />
-          <Route exact path={ROUTES.ARTIST_SIGN_UP} component={SignUpArtist} />
-          <Route exact path={ROUTES.SIGN_IN} component={SignInPage} />
-          <Route
-            exact
-            path={ROUTES.PASSWORD_FORGET}
-            component={PasswordForgetPage}
-          />
-          <Route exact path={ROUTES.HOME} component={HomePage} />
-          <Route exact path={ROUTES.ACCOUNT} component={AccountPage} />
-          <Route exact path={ROUTES.ADMIN} component={AdminPage} />
-          <Route exact path={ROUTES.UPDLOAD_FILES} component={UploadFile} />
+const middleware = REACT_APP_DEVTOOLS
+  ? composeWithDevTools(applyMiddleware(thunk, routerMiddleware(history)))
+  : applyMiddleware(thunk, routerMiddleware(history));
+
+export const myStore = createStore(rootReducer(history), middleware);
+
+class App extends Component {
+  state = {};
+  render() {
+    return (
+      <ConnectedRouter history={this.props.history}>
+        <div className="App">
+          <Main {...this.props} />
         </div>
-      </Router>
-    </div>
-  );
+      </ConnectedRouter>
+    );
+  }
 }
-export default withAuthentication(App);
+
+const ReduxApp = () => (
+  <Provider store={myStore}>
+    <App history={history} />
+  </Provider>
+);
+
+export default ReduxApp
