@@ -8,6 +8,7 @@ import { routerMiddleware, ConnectedRouter } from 'connected-react-router';
 import { createBrowserHistory } from 'history';
 
 import Main from './components/Routes/Main';
+import Navigation from './components/Navigation';
 import rootReducer from './redux/reducers';
 
 import './App.css';
@@ -30,6 +31,7 @@ class App extends Component {
     return (
       <ConnectedRouter history={this.props.history}>
         <div className="App">
+          <Navigation {...this.props} />
           <Main {...this.props} />
         </div>
       </ConnectedRouter>

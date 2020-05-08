@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
 import SideMenu from '../SideMenu'
 import Navigation from '../Navigation';
@@ -27,31 +27,24 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Router>
-          <div>
-            {/* <SideMenu /> */}
-            <Navigation />
-  
-            <hr />
-  
-            <Route exact path={ROUTES.LANDING} component={LandingPage} />
-            <Route exact path={ROUTES.SIGN_UP} component={SignUpPage} />
-            <Route exact path={ROUTES.ARTIST_SIGN_UP} component={SignUpArtist} />
-            <Route exact path={ROUTES.SIGN_IN} component={SignInPage} />
-            <Route
-              exact
-              path={ROUTES.PASSWORD_FORGET}
-              component={PasswordForgetPage}
-            />
-            <Route exact path={ROUTES.HOME} component={HomePage} />
-            <Route exact path={ROUTES.ACCOUNT} component={AccountPage} />
-            <Route exact path={ROUTES.ADMIN} component={AdminPage} />
-            <Route exact path={ROUTES.UPDLOAD_FILES} component={UploadFile} />
-          </div>
-        </Router>
+        <Switch>
+          <Route exact path={ROUTES.LANDING} component={LandingPage} />
+          <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
+          <Route path={ROUTES.ARTIST_SIGN_UP} component={SignUpArtist} />
+          <Route path={ROUTES.SIGN_IN} component={SignInPage} />
+          <Route
+            path={ROUTES.PASSWORD_FORGET}
+            component={PasswordForgetPage}
+          />
+          <Route path={ROUTES.HOME} component={HomePage} />
+          <Route path={ROUTES.ACCOUNT} component={AccountPage} />
+          <Route path={ROUTES.ADMIN} component={AdminPage} />
+          <Route path={ROUTES.UPDLOAD_FILES} component={UploadFile} />
+        </Switch>
       </div>
     );
   }
 }
 
 export default withAuthentication(App);
+// export default App;

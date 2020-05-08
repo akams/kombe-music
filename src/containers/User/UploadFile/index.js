@@ -3,7 +3,10 @@ import axios from 'axios';
 import * as firebase from 'firebase'
 import FileUploader from "react-firebase-file-uploader";
 import Select from 'react-select';
+import { withRouter } from 'react-router-dom';
 import { Col, Row, Button, Form, FormGroup, Label, Input, Container, FormText } from 'reactstrap';
+import { connect } from 'react-redux';
+import { compose } from 'recompose';
 
 import { withAuthorization } from '../../../components/Session';
 import { withFirebase } from '../../../components/Firebase'
@@ -92,6 +95,11 @@ class UploadFile extends React.Component {
     console.log({title, selectedOption, file})
     console.log('this.props==========>>>>', this.props);
 
+    // const musicRef = firebase.storage().ref('music/' + file.name)
+    // musicRef.put(file).then(() => {
+		// 	const storageRef = firebase.storage().ref('/music')
+    // })
+
     // const formData = new FormData();
     // formData.append('title',title)
     // formData.append('selectedOption',selectedOption)
@@ -127,7 +135,8 @@ class UploadFile extends React.Component {
   };
 
 	render() {
-		const { title, selectedOption } = this.state;
+    const { title, selectedOption } = this.state;
+    console.log('this.props==00000========>>>>', this.props);
 		return (
 			<div>
 				<h2>Upload an MP3 below!</h2>
@@ -183,9 +192,22 @@ class UploadFile extends React.Component {
 	}
 }
 
+const mapDispatchToProps = {};
 
+const mapStateToProps = state => ({
+  user: state.user,
+});
 
 const condition = authUser => !!authUser;
 const withAuth = withAuthorization(condition)(UploadFile)
 
-export default withFirebase(withAuth);
+export default compose(
+  withRouter,
+  withFirebase,
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
+)(withAuth);
+
+// export default withFirebase(withAuth);
