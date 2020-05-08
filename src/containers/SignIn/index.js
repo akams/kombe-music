@@ -46,6 +46,7 @@ class SignInFormBase extends Component {
       .then((result) => {
         getUserByUid(result.user.uid).then((userInfo) => {
           this.props.dispatchSetUsersFunction(userInfo.data);
+          sessionStorage.setItem('cookie_user', JSON.stringify(userInfo.data));
           this.setState({ ...INITIAL_STATE });
           this.props.history.push(ROUTES.HOME);
         })

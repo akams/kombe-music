@@ -13,19 +13,14 @@ import { withFirebase } from '../../../components/Firebase'
 import ENV from '../../../constants/environment/common.env';
 
 const RESOURCE = 'kmUploadTracksMusic/api/v1';
-const requestPostTrack = (payload, config) => axios({
-  url: `${ENV.apiUrl}${RESOURCE}/upload-track`,
-  method: 'POST',
-  data: payload,
-  config
-})
+const saveTrack = (payload) => axios.post(`${ENV.apiUrl}${RESOURCE}/save-track`, payload)
 
 class UploadFile extends React.Component {
 	constructor(props) {
     super(props)
     this.state = {
       title: '',
-      selectedOption: null,
+      selected: null,
       file: null,
       song: '',
 	    songName: '',
@@ -74,11 +69,8 @@ class UploadFile extends React.Component {
     })
   }
   
-  handleChange = selectedOption => {
-    this.setState(
-      { selectedOption },
-      () => console.log(`Option selected:`, this.state.selectedOption)
-    );
+  handleChange = selected => {
+    this.setState({ selected });
   };
 
   onChange = event => {
@@ -86,33 +78,19 @@ class UploadFile extends React.Component {
   };
   
   onChangeFile = event => {
-    this.setState({ [event.target.name]: event.target.files });
+    this.setState({ file: event.target.files[0] });
   };
 
   onSubmit = event => {
     event.preventDefault();
-    const { title, selectedOption, file } = this.state;
-    console.log({title, selectedOption, file})
-    console.log('this.props==========>>>>', this.props);
-
-    // const musicRef = firebase.storage().ref('music/' + file.name)
-    // musicRef.put(file).then(() => {
-		// 	const storageRef = firebase.storage().ref('/music')
-    // })
-
-    // const formData = new FormData();
-    // formData.append('title',title)
-    // formData.append('selectedOption',selectedOption)
-    // formData.append('file',file)
-
-    // const config = {
-    //   headers: {
-    //     "Content-Type": "multipart/form-data",
-    //     "Accept": "application/json",
-    //     "type": "formData"
-    //   }
-    // }
-    // requestPostTrack(formData, config)
+    const { title, selected, file } = this.state;
+    const { user: { payload : { id } } } = this.props;
+    console.log({title, selected, file})
+    const musicRef = firebase.storage().ref(`music/${id}/` + file.name)
+    musicRef.put(file).then(() => {
+      saveTrack({title, selected})
+    })
+    .catch(e => console.error(e))
   }
 
 	handleChangeUsername = event =>
@@ -135,11 +113,10 @@ class UploadFile extends React.Component {
   };
 
 	render() {
-    const { title, selectedOption } = this.state;
-    console.log('this.props==00000========>>>>', this.props);
+    const { title, selected } = this.state;
 		return (
 			<div>
-				<h2>Upload an MP3 below!</h2>
+				<h2>Upload Music</h2>
 
         <Container style={{padding: '5%', textAlign: 'left'}} fluid={true}>
           <Form onSubmit={this.onSubmit}>
@@ -151,7 +128,7 @@ class UploadFile extends React.Component {
               <Label for="title">Genre musical</Label>
               <Select
                 isMulti
-                value={selectedOption}
+                value={selected}
                 onChange={this.handleChange}
                 options={[
                   { value: 'chocolate', label: 'Chocolate' },
