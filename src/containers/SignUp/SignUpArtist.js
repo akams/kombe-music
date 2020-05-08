@@ -7,8 +7,6 @@ import { withFirebase } from '../../components/Firebase';
 import * as ROUTES from '../../constants/routes';
 import ENV from '../../constants/environment/common.env';
 
-
-
 const RESOURCE = 'kmUsersFunctions/api/v1';
 const requestSignUp = payload => axios.post(ENV.apiUrl + `${RESOURCE}/signup`, payload);
 

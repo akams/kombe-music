@@ -1,11 +1,20 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
+import axios from 'axios';
+import { connect } from 'react-redux';
 
 import { SignUpLink } from '../SignUp';
 import { PasswordForgetLink } from '../../components/PasswordForget';
 import { withFirebase } from '../../components/Firebase';
 import * as ROUTES from '../../constants/routes';
+import ENV from '../../constants/environment/common.env';
+
+
+import { dispatchSetUsers } from '../../redux/action/user';
+
+const RESOURCE = 'kmUsersFunctions/api/v1';
+const getUserByUid = uid => axios.get(ENV.apiUrl + `${RESOURCE}/userLocalId/${uid}`);
 
 const SignInPage = () => (
   <div>
@@ -34,9 +43,13 @@ class SignInFormBase extends Component {
 
     this.props.firebase
       .doSignInWithEmailAndPassword(email, password)
-      .then(() => {
-        this.setState({ ...INITIAL_STATE });
-        this.props.history.push(ROUTES.HOME);
+      .then((result) => {
+        getUserByUid(result.user.uid).then((userInfo) => {
+          this.props.dispatchSetUsersFunction(userInfo.data);
+          this.setState({ ...INITIAL_STATE });
+          this.props.history.push(ROUTES.HOME);
+        })
+        .catch(e => console.error({e}))
       })
       .catch(error => {
         this.setState({ error });
@@ -80,9 +93,21 @@ class SignInFormBase extends Component {
   }
 }
 
+const mapDispatchToProps = {
+  dispatchSetUsersFunction: user => dispatchSetUsers(user),
+};
+
+const mapStateToProps = () => ({
+});
+
+
 const SignInForm = compose(
   withRouter,
   withFirebase,
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
 )(SignInFormBase);
 
 export default SignInPage;
