@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
 
 import SideMenu from '../SideMenu'
 import Navigation from '../Navigation';
@@ -12,18 +14,33 @@ import HomePage from '../../containers/Home';
 import AccountPage from '../../containers/Account';
 import AdminPage from '../../containers/Admin';
 import UploadFile from '../../containers/User/UploadFile';
-
-/** ARTIST */
 import SignUpArtist from '../../containers/SignUp/SignUpArtist';
 
 import * as ROUTES from '../../constants/routes';
 import { withAuthentication } from '../Session';
+import { dispatchSetUsers } from '../../redux/action/user';
 
 
 import '../../App.css';
 
 class App extends Component {
   state = {};
+
+  componentWillMount() {
+    this.loadUserFromToken();
+  }
+
+
+  loadUserFromToken() {
+    let token = sessionStorage.getItem('cookie_user');
+    if (!token || token === '') {
+      //if there is no token, dont bother
+      return;
+    }
+    console.log({token})
+    return this.props.dispatchSetUsersFunction(JSON.parse(token));
+  }
+
   render() {
     return (
       <div className="App">
@@ -46,5 +63,20 @@ class App extends Component {
   }
 }
 
-export default withAuthentication(App);
-// export default App;
+const mapDispatchToProps = {
+  dispatchSetUsersFunction: user => dispatchSetUsers(user),
+};
+
+const mapStateToProps = () => ({
+});
+
+
+const AppRedux = compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
+)(App);
+
+
+export default withAuthentication(AppRedux);
