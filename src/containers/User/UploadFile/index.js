@@ -13,7 +13,23 @@ import { withFirebase } from '../../../components/Firebase'
 import ENV from '../../../constants/environment/common.env';
 
 const RESOURCE = 'kmUploadTracksMusic/api/v1';
+
 const saveTrack = (payload) => axios.post(`${ENV.apiUrl}${RESOURCE}/save-track`, payload)
+const getMusicalCategories = () => axios.get(`${ENV.apiUrl}${RESOURCE}/music-categories`)
+
+const formToApi = (formData) => {
+  console.log({formData});
+  const selected = formData.selected.map(s => {
+    return {
+      label: s.label
+    };
+  });
+  return {
+    title: formData.title,
+    url: formData.url,
+    selected,
+  }
+}
 
 class UploadFile extends React.Component {
 	constructor(props) {
@@ -28,11 +44,29 @@ class UploadFile extends React.Component {
       avatar: "",
       isUploading: false,
       progress: 0,
-      avatarURL: ""
+      avatarURL: "",
+      musicalcategorie: []
     }
     this.handleUpload = this.handleUpload.bind(this);
     // this.handleChange = this.handleChange.bind(this);
     // this.handlePlayPauseClick = this.handlePlayPauseClick.bind(this)
+  }
+
+  componentDidMount() {
+    this.getMusicCategories();
+  }
+
+  getMusicCategories() {
+    getMusicalCategories().then((resultat) => {
+      const musicalcategorie = resultat.data.map(d => {
+        return {
+          value: d.id,
+          label: d.data.label
+        }
+      }).sort((a, b) => a.label.toLowerCase() < b.label.toLowerCase() ? -1 : 1 )
+      this.setState({ musicalcategorie })
+    })
+    .catch(e => console.error(e));
   }
 
 	handleUpload(evt) {
@@ -85,10 +119,15 @@ class UploadFile extends React.Component {
     event.preventDefault();
     const { title, selected, file } = this.state;
     const { user: { payload : { id } } } = this.props;
-    console.log({title, selected, file})
     const musicRef = firebase.storage().ref(`music/${id}/` + file.name)
     musicRef.put(file).then(() => {
-      saveTrack({title, selected})
+      const storageRef = firebase.storage().ref(`music/${id}/`)
+      storageRef
+      .child(file.name)
+      .getDownloadURL()
+      .then(url => {
+        saveTrack(formToApi({title, selected, url}))
+      })
     })
     .catch(e => console.error(e))
   }
@@ -113,7 +152,7 @@ class UploadFile extends React.Component {
   };
 
 	render() {
-    const { title, selected } = this.state;
+    const { title, selected, musicalcategorie } = this.state;
 		return (
 			<div>
 				<h2>Upload Music</h2>
@@ -130,11 +169,7 @@ class UploadFile extends React.Component {
                 isMulti
                 value={selected}
                 onChange={this.handleChange}
-                options={[
-                  { value: 'chocolate', label: 'Chocolate' },
-                  { value: 'strawberry', label: 'Strawberry' },
-                  { value: 'vanilla', label: 'Vanilla' },
-                ]}
+                options={musicalcategorie}
               />
             </FormGroup>
             <FormGroup>
@@ -186,5 +221,3 @@ export default compose(
     mapDispatchToProps
   )
 )(withAuth);
-
-// export default withFirebase(withAuth);
