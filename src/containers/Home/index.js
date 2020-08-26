@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
-import { Container, Form, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon } from 'reactstrap';
+import { Container, Form, FormGroup, Label, Input, Button, InputGroup, InputGroupAddon, Card, CardTitle, CardText, Row, Col,
+  ListGroup, ListGroupItem } from 'reactstrap';
 import Select from 'react-select';
 
 import { withAuthorization } from '../../components/Session';
@@ -9,8 +10,12 @@ import ENV from '../../constants/environment/common.env';
 const RESOURCE = 'kmUploadTracksMusic/api/v1';
 
 const getMusicalCategories = () => axios.get(`${ENV.apiUrl}${RESOURCE}/music-categories`)
-
-
+// const findArtist = value => axios.get(`${ENV.apiUrl}${RESOURCE}/findArtist=${value}`)
+const findArtist = (value = 2000) => new Promise(function(resolve, reject) { 
+  setTimeout(resolve, value); 
+}).then(function() { 
+  console.log(`Wrapped setTimeout after ${value}ms`); 
+}); 
 
 class Home extends React.Component {
 	constructor(props) {
@@ -39,6 +44,16 @@ class Home extends React.Component {
     .catch(e => console.error(e));
   }
 
+  onChange = event => {
+    const value = event.target.value;
+    console.log({value})
+    this.setState({ title: event.target.value });
+    findArtist(value).then((res) => {
+      console.warn({res})
+    })
+    .catch(e => console.error(e))
+  };
+ 
   handleChangeSelect = selected => {
     this.setState({ selected });
   };
@@ -54,21 +69,31 @@ class Home extends React.Component {
             <FormGroup>
               <InputGroup>
                 <Label for="title" hidden>Titre</Label>
-                <Input type="text" name="title" id="title" placeholder="Titres | Artistes" value={title} onChange={this.onChange} />
-                <InputGroupAddon addonType="append"><Button>Search</Button></InputGroupAddon>
+                <Input type="text" name="title" id="title" placeholder="Rechercher" value={title} onChange={this.onChange} />
               </InputGroup>
             </FormGroup>
-            <FormGroup>
-              <Label for="Gm" hidden>Genre musical</Label>
-              <Select
-                isMulti
-                value={selected}
-                onChange={this.handleChangeSelect}
-                options={musicalcategorie}
-                placeholder="Genre musical"
-              />
-            </FormGroup>
           </Form>
+          <Row>
+            {musicalcategorie && musicalcategorie.map((m, index) => (
+            <Col key={m.value}>
+              <Card body>
+                <Button>{m.label}</Button>
+              </Card>
+            </Col>
+            ))}
+          </Row>
+          <Row>
+            <Container fluid={true}>
+              <h2>Titres</h2>
+              <ListGroup>
+                <ListGroupItem tag="button" action>Cras justo odio</ListGroupItem>
+                <ListGroupItem tag="button" action>Dapibus ac facilisis in</ListGroupItem>
+                <ListGroupItem tag="button" action>Morbi leo risus</ListGroupItem>
+                <ListGroupItem tag="button" action>Porta ac consectetur ac</ListGroupItem>
+                <ListGroupItem tag="button" action>Vestibulum at eros</ListGroupItem>
+              </ListGroup>
+            </Container>
+          </Row>
         </Container>
       </div>
     );
