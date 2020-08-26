@@ -15,6 +15,7 @@ import AccountPage from '../../containers/Account';
 import AdminPage from '../../containers/Admin';
 import UploadFile from '../../containers/User/UploadFile';
 import SignUpArtist from '../../containers/SignUp/SignUpArtist';
+import MusicPlayer from '../../components/MusicPlayer';
 
 import * as ROUTES from '../../constants/routes';
 import { withAuthentication } from '../Session';
@@ -58,6 +59,7 @@ class App extends Component {
           <Route path={ROUTES.ADMIN} component={AdminPage} />
           <Route path={ROUTES.UPDLOAD_FILES} component={UploadFile} />
         </Switch>
+        <MusicPlayer />
       </div>
     );
   }
