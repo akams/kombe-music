@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 
-import { HomePage } from './pages';
+import { HomePage, SigninPage, SignupPage, SignupEnd, NotFound } from './pages';
 import * as ROUTES from './constants/routes';
 import { IsUserRedirect, ProtectedRoute, UnProtectedRoute } from './helpers/routes';
 import { withFirebase } from './context/firebase';
@@ -12,14 +12,40 @@ import { dispatchSetUsers } from './redux/action/user';
 
 function App(props) {
   const { dispatch, firebase, dispatchSetUsersFunction } = props;
-  return (
+  const { user } = useAuthListener(firebase, dispatchSetUsersFunction);
+  console.log({ user });
+  return user !== false ? (
     <Router>
       <Switch>
-        <UnProtectedRoute path={ROUTES.HOME}>
-          <HomePage />
+        <IsUserRedirect
+          user={user}
+          confirmEmailVerifiedPath={ROUTES.SIGN_UP_END}
+          loggedInPath={ROUTES.HOME}
+          path={ROUTES.SIGN_IN}
+        >
+          <SigninPage dispatch={dispatch} />
+        </IsUserRedirect>
+        <IsUserRedirect
+          user={user}
+          confirmEmailVerifiedPath={ROUTES.SIGN_UP_END}
+          loggedInPath={ROUTES.HOME}
+          path={ROUTES.SIGN_UP}
+        >
+          <SignupPage dispatch={dispatch} />
+        </IsUserRedirect>
+        <UnProtectedRoute path={ROUTES.SIGN_UP_END}>
+          <SignupEnd dispatch={dispatch} />
         </UnProtectedRoute>
+        <ProtectedRoute exact path={ROUTES.HOME}>
+          <HomePage />
+        </ProtectedRoute>
+        <Route path="*" component={NotFound} />
       </Switch>
     </Router>
+  ) : (
+    <div className="loader">
+      <div className="preloader-preview-area" />
+    </div>
   );
 }
 

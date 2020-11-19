@@ -1,95 +1,74 @@
-import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
-import { compose } from 'recompose';
-import axios from 'axios';
+import React from 'react';
+import { Button, Form } from 'reactstrap';
 import { connect } from 'react-redux';
+import { reduxForm, Field, formValueSelector } from 'redux-form';
+import { compose } from 'recompose';
+import { HiMail } from 'react-icons/hi';
+import { FaUnlockAlt } from 'react-icons/fa';
 
-import { SignUpLink } from '../SignUp';
-import { PasswordForgetLink } from '../../components/PasswordForget';
-import { withFirebase } from '../../components/Firebase';
-import * as ROUTES from '../../constants/routes';
-import ENV from '../../constants/environment/common.env';
+import { createInitFormData } from '../../redux/form/helpers';
+import { renderInputGroupField } from '../../redux/form/renderers';
+import { compileValidation } from './validate';
 
-import { dispatchSetUsers } from '../../redux/action/user';
+export const formName = 'signinForm';
+export const initFormData = createInitFormData(formName);
 
-const RESOURCE = 'kmUsersFunctions/api/v1';
-const getUserByUid = (uid) => axios.get(`${ENV.apiUrl}${RESOURCE}/userLocalId/${uid}`);
+function LoginContainer(props) {
+  const { handleSubmit } = props;
 
-const SignInPage = () => (
-  <div>
-    <h1>SignIn</h1>
-    <SignInForm />
-    <PasswordForgetLink />
-    <SignUpLink />
-  </div>
-);
-
-const INITIAL_STATE = {
-  email: '',
-  password: '',
-  error: null,
-};
-
-class SignInFormBase extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = { ...INITIAL_STATE };
-  }
-
-  onSubmit = (event) => {
-    const { email, password } = this.state;
-
-    this.props.firebase
-      .doSignInWithEmailAndPassword(email, password)
-      .then((result) => {
-        getUserByUid(result.user.uid)
-          .then((userInfo) => {
-            this.props.dispatchSetUsersFunction(userInfo.data);
-            sessionStorage.setItem('cookie_user', JSON.stringify(userInfo.data));
-            this.setState({ ...INITIAL_STATE });
-            this.props.history.push(ROUTES.HOME);
-          })
-          .catch((e) => console.error({ e }));
-      })
-      .catch((error) => {
-        this.setState({ error });
-      });
-
-    event.preventDefault();
+  const onHandleSubmit = (data) => {
+    props.originalOnSubmit(data);
   };
 
-  onChange = (event) => {
-    this.setState({ [event.target.name]: event.target.value });
-  };
-
-  render() {
-    const { email, password, error } = this.state;
-
-    const isInvalid = password === '' || email === '';
-
-    return (
-      <form onSubmit={this.onSubmit}>
-        <input name="email" value={email} onChange={this.onChange} type="text" placeholder="Email Address" />
-        <input name="password" value={password} onChange={this.onChange} type="password" placeholder="Password" />
-        <button disabled={isInvalid} type="submit">
-          Sign In
-        </button>
-
-        {error && <p>{error.message}</p>}
-      </form>
-    );
-  }
+  return (
+    <Form role="form">
+      <Field
+        inputClass="form-control-alternative"
+        id="email"
+        name="email"
+        type="email"
+        placeholder="jean.dupont@lambda.fr"
+        iconComponent={<HiMail />}
+        component={renderInputGroupField}
+      />
+      <Field
+        inputClass="form-control-alternative"
+        id="password"
+        name="password"
+        type="password"
+        autoComplete="off"
+        iconComponent={<FaUnlockAlt />}
+        component={renderInputGroupField}
+      />
+      <div className="custom-control custom-control-alternative custom-checkbox">
+        <input className="custom-control-input" id=" customCheckLogin" type="checkbox" />
+        {/*  eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+        <label className="custom-control-label" htmlFor="customCheckLogin">
+          <span>Remember me</span>
+        </label>
+      </div>
+      <div className="text-center">
+        <Button className="my-4" color="primary" type="submit" onClick={handleSubmit(onHandleSubmit)}>
+          Valider
+        </Button>
+      </div>
+    </Form>
+  );
 }
 
-const mapDispatchToProps = {
-  dispatchSetUsersFunction: (user) => dispatchSetUsers(user),
-};
+const selector = formValueSelector(formName);
+const mapDispatchToProps = {};
+const mapStateToProps = (state) => ({
+  formValues: {
+    email: selector(state, 'email'),
+    password: selector(state, 'password'),
+  },
+});
 
-const mapStateToProps = () => ({});
-
-const SignInForm = compose(withRouter, withFirebase, connect(mapStateToProps, mapDispatchToProps))(SignInFormBase);
-
-export default SignInPage;
-
-export { SignInForm };
+export default compose(
+  reduxForm({
+    form: formName,
+    validate: compileValidation,
+  }),
+  connect(mapStateToProps, mapDispatchToProps)
+)(LoginContainer);

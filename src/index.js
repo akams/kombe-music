@@ -11,6 +11,7 @@ import FirebaseContext from './context/firebase';
 import configureStore, { history } from './configureStore';
 
 import 'react-toastify/dist/ReactToastify.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export const myStore = configureStore();
 

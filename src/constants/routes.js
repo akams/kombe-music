@@ -1,5 +1,6 @@
-export const SIGN_UP = '/signup';
 export const SIGN_IN = '/signin';
+export const SIGN_UP = '/signup';
+export const SIGN_UP_END = '/confirmation-inscription';
 export const LANDING = '/';
 export const HOME = '/';
 export const ACCOUNT = '/account';

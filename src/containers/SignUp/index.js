@@ -1,236 +1,66 @@
-import React, { Component } from 'react';
+import React, { useEffect, useRef } from 'react';
+import { compose } from 'recompose';
+import { Card, CardBody, Container, Row, Col } from 'reactstrap';
+import { toast } from 'react-toastify';
 import axios from 'axios';
-import { Link, withRouter } from 'react-router-dom';
-import { Col, Row, Button, Form, FormGroup, Label, Input, Container } from 'reactstrap';
 
-import { withFirebase } from '../../components/Firebase';
-import * as ROUTES from '../../constants/routes';
+import { withFirebase } from '../../context/firebase';
 import ENV from '../../constants/environment/common.env';
 
-const RESOURCE = 'kmUsersFunctions/api/v1';
-const requestSignUp = (payload) => axios.post(`${ENV.apiUrl}${RESOURCE}/signup`, payload);
+import SignupForm, { initFormData } from './form';
 
-const SignUpPage = () => (
-  <div>
-    <h1>Inscription</h1>
-    <SignUpForm />
-  </div>
-);
+const requestSignUp = (payload) => axios.post(`${ENV.apiUrl}/signup`, payload);
 
-const INITIAL_STATE = {
-  lastName: '',
-  firstName: '',
-  birthDate: '',
-  address: '',
-  city: '',
-  cp: '',
-  country: '',
-  username: '',
-  email: '',
-  passwordOne: '',
-  passwordTwo: '',
-  error: null,
-};
+function Signup(props) {
+  const mainContent = useRef(null);
+  const { firebase, dispatch } = props;
 
-class SignUpFormBase extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = { ...INITIAL_STATE };
-  }
-
-  onSubmit = (event) => {
-    const { lastName, firstName, birthDate, address, city, cp, country, username, email, passwordOne } = this.state;
-
-    this.props.firebase
-      .doCreateUserWithEmailAndPassword(email, passwordOne)
-      .then((authUser) => {
-        requestSignUp({
-          uid: authUser.user.uid,
-          lastName,
-          firstName,
-          birthDate,
-          address,
-          city,
-          cp,
-          country,
-          username,
-          email,
-          typeAccount: 'clas',
-        })
-          .then(() => {
-            this.setState({ ...INITIAL_STATE });
-            this.props.history.push(ROUTES.HOME);
-          })
-          .catch((error) => {
-            this.setState({ error });
-          });
-      })
-      .catch((error) => {
-        this.setState({ error });
+  const handleSubmit = async (data) => {
+    const { email, password, lastname, firstname } = data;
+    try {
+      const result = await firebase.register(email, password);
+      await requestSignUp({
+        uid: result.user.uid,
+        email,
+        lastname,
+        firstname,
       });
-
-    event.preventDefault();
+      toast.success('🦄 Votre compte à bien été créer!');
+    } catch (error) {
+      console.error({ error });
+      toast.error(`Error: ${error}`);
+    }
   };
 
-  onChange = (event) => {
-    this.setState({ [event.target.name]: event.target.value });
+  const initForm = (data = { lastname: '', firstname: '', email: '', password: '', passwordTwo: '' }) => {
+    dispatch(initFormData(data));
   };
 
-  render() {
-    const {
-      lastName,
-      firstName,
-      birthDate,
-      address,
-      city,
-      cp,
-      country,
-      username,
-      email,
-      passwordOne,
-      passwordTwo,
-      error,
-    } = this.state;
-
-    const isInvalid = passwordOne !== passwordTwo || passwordOne === '' || email === '' || username === '';
-
-    return (
-      <Container style={{ padding: '5%', textAlign: 'left' }} fluid>
-        <Form onSubmit={this.onSubmit}>
-          <FormGroup>
-            <Label for="lastName">Nom</Label>
-            <Input
-              type="text"
-              name="lastName"
-              id="lastName"
-              placeholder="Dupont"
-              value={lastName}
-              onChange={this.onChange}
-            />
-          </FormGroup>
-          <FormGroup>
-            <Label for="firstName">Prénom</Label>
-            <Input
-              type="text"
-              name="firstName"
-              id="firstName"
-              placeholder="Jean"
-              value={firstName}
-              onChange={this.onChange}
-            />
-          </FormGroup>
-          <FormGroup>
-            <Label for="birthDate">Date de naissance</Label>
-            <Input
-              type="text"
-              name="birthDate"
-              id="birthDate"
-              placeholder="01/01/1992"
-              value={birthDate}
-              onChange={this.onChange}
-            />
-          </FormGroup>
-          <FormGroup>
-            <Label for="address">Adresse</Label>
-            <Input
-              type="text"
-              name="address"
-              id="address"
-              placeholder="3 rue jean"
-              value={address}
-              onChange={this.onChange}
-            />
-          </FormGroup>
-          <Row form>
-            <Col md={6}>
-              <FormGroup>
-                <Label for="city">Ville</Label>
-                <Input
-                  type="text"
-                  name="city"
-                  id="city"
-                  placeholder="Libreville"
-                  value={city}
-                  onChange={this.onChange}
-                />
-              </FormGroup>
-            </Col>
-            <Col md={4}>
-              <FormGroup>
-                <Label for="cp">Code postal</Label>
-                <Input type="text" name="cp" id="cp" placeholder="BP8999" value={cp} onChange={this.onChange} />
-              </FormGroup>
-            </Col>
-            <Col md={2}>
-              <FormGroup>
-                <Label for="country">Pays</Label>
-                <Input
-                  type="text"
-                  name="country"
-                  id="country"
-                  placeholder="Gabon"
-                  value={country}
-                  onChange={this.onChange}
-                />
-              </FormGroup>
-            </Col>
-          </Row>
-          <FormGroup>
-            <Label for="email">Email</Label>
-            <Input
-              type="email"
-              name="email"
-              id="email"
-              placeholder="samuel-k@email.com"
-              value={email}
-              onChange={this.onChange}
-            />
-          </FormGroup>
-          <FormGroup>
-            <Label for="username">username</Label>
-            <Input
-              type="text"
-              name="username"
-              id="username"
-              placeholder="samuel-k"
-              value={username}
-              onChange={this.onChange}
-            />
-          </FormGroup>
-          <FormGroup>
-            <Label for="examplePassword">Password</Label>
-            <Input
-              type="password"
-              name="passwordOne"
-              id="examplePassword"
-              value={passwordOne}
-              onChange={this.onChange}
-              type="password"
-            />
-          </FormGroup>
-          <FormGroup>
-            <Label for="passwordTwo">Confirmer password</Label>
-            <Input type="password" name="passwordTwo" id="passwordTwo" value={passwordTwo} onChange={this.onChange} />
-          </FormGroup>
-          <Button disabled={isInvalid} type="submit">
-            Sign Up
-          </Button>
-        </Form>
-        {error && <p>{error.message}</p>}
-      </Container>
-    );
-  }
+  useEffect(() => {
+    initForm();
+  }, []);
+  return (
+    <>
+      <main ref={mainContent}>
+        <section className="full-page-container-center section section-shaped section-lg bg-secondary">
+          <Container>
+            <Row className="justify-content-center">
+              <Col lg="8">
+                <Card className="shadow border-0">
+                  <CardBody className="px-lg-5 py-lg-5">
+                    <div className="text-center text-muted mb-6">
+                      <h1>Inscription utilisateur</h1>
+                    </div>
+                    <SignupForm originalOnSubmit={handleSubmit} {...props} />
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
+          </Container>
+        </section>
+      </main>
+    </>
+  );
 }
 
-const SignUpLink = () => (
-  <p>
-    Don't have an account? <Link to={ROUTES.SIGN_UP}>Sign Up</Link>
-  </p>
-);
-
-const SignUpForm = withRouter(withFirebase(SignUpFormBase));
-
-export default SignUpPage;
-
-export { SignUpForm, SignUpLink };
+export default compose(withFirebase)(Signup);

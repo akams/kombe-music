@@ -7,14 +7,14 @@ import SideMenu from '../SideMenu';
 import Navigation from '../Navigation';
 import PasswordForgetPage from '../PasswordForget';
 
-import LandingPage from '../../containers/Landing';
-import SignUpPage from '../../containers/SignUp';
-import SignInPage from '../../containers/SignIn';
+// import LandingPage from '../../containers/Landing';
+// import SignUpPage from '../../containers/SignUp';
+// import SignInPage from '../../containers/SignIn';
 import HomePage from '../../containers/Home';
 import AccountPage from '../../containers/Account';
 import AdminPage from '../../containers/Admin';
 import UploadFile from '../../containers/User/UploadFile';
-import SignUpArtist from '../../containers/SignUp/SignUpArtist';
+// import SignUpArtist from '../../containers/SignUp/SignUpArtist';
 import MusicPlayer from '../MusicPlayer';
 
 import * as ROUTES from '../../constants/routes';
