@@ -5,7 +5,7 @@ import { ConnectedRouter } from 'connected-react-router';
 import { ToastContainer } from 'react-toastify';
 import 'normalize.css';
 import './index.css';
-import App from './bis';
+import App from './app';
 import Firebase from './firebase/firebase.prod';
 import FirebaseContext from './context/firebase';
 import configureStore, { history } from './configureStore';
