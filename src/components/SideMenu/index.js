@@ -1,6 +1,6 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHome, faSearch, faCog, faVideoSlash, faList } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHome, faSearch, faCog, faVideoSlash, faList } from '@fortawesome/free-solid-svg-icons';
 import SideNav, { Toggle, Nav, NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
 import { NavLink } from 'reactstrap';
 
@@ -16,9 +16,7 @@ import './style.css';
 const Navigation = () => (
   <div>
     <AuthUserContext.Consumer>
-      {authUser =>
-        authUser ? <NavigationAuth /> : <NavigationNonAuth />
-      }
+      {(authUser) => (authUser ? <NavigationAuth /> : <NavigationNonAuth />)}
     </AuthUserContext.Consumer>
   </div>
 );
@@ -28,7 +26,7 @@ function NavigationNonAuth() {
     <SideNav
       onSelect={(selected) => {
         // Add your code here
-        console.log({ selected })
+        console.log({ selected });
       }}
     >
       <SideNav.Toggle />
@@ -39,7 +37,7 @@ function NavigationNonAuth() {
               <FontAwesomeIcon icon={faHome} style={{ fontSize: '1.75em' }} />
             </NavIcon>
             {/* <NavText> */}
-              <span>Landing</span>
+            <span>Landing</span>
             {/* </NavText> */}
           </NavLink>
         </NavItem>
@@ -53,7 +51,6 @@ function NavigationNonAuth() {
             </NavText>
           </NavLink>
         </NavItem> */}
-
       </SideNav.Nav>
     </SideNav>
   );
@@ -64,7 +61,7 @@ function NavigationAuth() {
     <SideNav
       onSelect={(selected) => {
         // Add your code here
-        console.log({ selected })
+        console.log({ selected });
       }}
     >
       <SideNav.Toggle />
@@ -90,38 +87,25 @@ function NavigationAuth() {
           <NavIcon>
             <FontAwesomeIcon icon={faList} style={{ fontSize: '1.75em' }} />
           </NavIcon>
-          <NavText>
-            Ma Playlist
-            </NavText>
+          <NavText>Ma Playlist</NavText>
           <NavItem eventKey="playlist/linechart">
-            <NavText>
-              Upload fichier
-            </NavText>
+            <NavText>Upload fichier</NavText>
           </NavItem>
           <NavItem eventKey="playlist/barchart">
-            <NavText>
-              Bar Chart
-            </NavText>
+            <NavText>Bar Chart</NavText>
           </NavItem>
         </NavItem>
-
 
         <NavItem eventKey="settings">
           <NavIcon>
             <FontAwesomeIcon icon={faCog} style={{ fontSize: '1.75em' }} />
           </NavIcon>
-          <NavText>
-            Paramètre
-            </NavText>
+          <NavText>Paramètre</NavText>
           <NavItem eventKey="charts/linechart">
-            <NavText>
-              Line Chart
-                </NavText>
+            <NavText>Line Chart</NavText>
           </NavItem>
           <NavItem eventKey="charts/barchart">
-            <NavText>
-              Bar Chart
-                </NavText>
+            <NavText>Bar Chart</NavText>
           </NavItem>
         </NavItem>
 
@@ -129,18 +113,12 @@ function NavigationAuth() {
           <NavIcon>
             <FontAwesomeIcon icon={faVideoSlash} style={{ fontSize: '1.75em' }} />
           </NavIcon>
-          <NavText>
-            Charts
-            </NavText>
+          <NavText>Charts</NavText>
           <NavItem eventKey="charts/linechart">
-            <NavText>
-              Line Chart
-                </NavText>
+            <NavText>Line Chart</NavText>
           </NavItem>
           <NavItem eventKey="charts/barchart">
-            <NavText>
-              Bar Chart
-                </NavText>
+            <NavText>Bar Chart</NavText>
           </NavItem>
         </NavItem>
       </SideNav.Nav>

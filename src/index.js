@@ -1,20 +1,37 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import { ConnectedRouter } from 'connected-react-router';
+import { ToastContainer } from 'react-toastify';
+import 'normalize.css';
 import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
-import Firebase, { FirebaseContext } from './components/Firebase';
+import App from './bis';
+import Firebase from './firebase/firebase.prod';
+import FirebaseContext from './context/firebase';
+import configureStore, { history } from './configureStore';
 
-import 'bootstrap/dist/css/bootstrap.min.css';
+import 'react-toastify/dist/ReactToastify.css';
+
+export const myStore = configureStore();
 
 ReactDOM.render(
-	<FirebaseContext.Provider value={new Firebase()}>
-		<App />
-	</FirebaseContext.Provider>,
-	document.getElementById('root'),
+  <FirebaseContext.Provider value={new Firebase()}>
+    <Provider store={myStore}>
+      <ConnectedRouter history={history}>
+        <App dispatch={myStore.dispatch} />
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
+      </ConnectedRouter>
+    </Provider>
+  </FirebaseContext.Provider>,
+  document.getElementById('root')
 );
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();

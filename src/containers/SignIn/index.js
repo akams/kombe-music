@@ -10,11 +10,10 @@ import { withFirebase } from '../../components/Firebase';
 import * as ROUTES from '../../constants/routes';
 import ENV from '../../constants/environment/common.env';
 
-
 import { dispatchSetUsers } from '../../redux/action/user';
 
 const RESOURCE = 'kmUsersFunctions/api/v1';
-const getUserByUid = uid => axios.get(ENV.apiUrl + `${RESOURCE}/userLocalId/${uid}`);
+const getUserByUid = (uid) => axios.get(`${ENV.apiUrl}${RESOURCE}/userLocalId/${uid}`);
 
 const SignInPage = () => (
   <div>
@@ -38,28 +37,29 @@ class SignInFormBase extends Component {
     this.state = { ...INITIAL_STATE };
   }
 
-  onSubmit = event => {
+  onSubmit = (event) => {
     const { email, password } = this.state;
 
     this.props.firebase
       .doSignInWithEmailAndPassword(email, password)
       .then((result) => {
-        getUserByUid(result.user.uid).then((userInfo) => {
-          this.props.dispatchSetUsersFunction(userInfo.data);
-          sessionStorage.setItem('cookie_user', JSON.stringify(userInfo.data));
-          this.setState({ ...INITIAL_STATE });
-          this.props.history.push(ROUTES.HOME);
-        })
-        .catch(e => console.error({e}))
+        getUserByUid(result.user.uid)
+          .then((userInfo) => {
+            this.props.dispatchSetUsersFunction(userInfo.data);
+            sessionStorage.setItem('cookie_user', JSON.stringify(userInfo.data));
+            this.setState({ ...INITIAL_STATE });
+            this.props.history.push(ROUTES.HOME);
+          })
+          .catch((e) => console.error({ e }));
       })
-      .catch(error => {
+      .catch((error) => {
         this.setState({ error });
       });
 
     event.preventDefault();
   };
 
-  onChange = event => {
+  onChange = (event) => {
     this.setState({ [event.target.name]: event.target.value });
   };
 
@@ -70,20 +70,8 @@ class SignInFormBase extends Component {
 
     return (
       <form onSubmit={this.onSubmit}>
-        <input
-          name="email"
-          value={email}
-          onChange={this.onChange}
-          type="text"
-          placeholder="Email Address"
-        />
-        <input
-          name="password"
-          value={password}
-          onChange={this.onChange}
-          type="password"
-          placeholder="Password"
-        />
+        <input name="email" value={email} onChange={this.onChange} type="text" placeholder="Email Address" />
+        <input name="password" value={password} onChange={this.onChange} type="password" placeholder="Password" />
         <button disabled={isInvalid} type="submit">
           Sign In
         </button>
@@ -95,21 +83,12 @@ class SignInFormBase extends Component {
 }
 
 const mapDispatchToProps = {
-  dispatchSetUsersFunction: user => dispatchSetUsers(user),
+  dispatchSetUsersFunction: (user) => dispatchSetUsers(user),
 };
 
-const mapStateToProps = () => ({
-});
+const mapStateToProps = () => ({});
 
-
-const SignInForm = compose(
-  withRouter,
-  withFirebase,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )
-)(SignInFormBase);
+const SignInForm = compose(withRouter, withFirebase, connect(mapStateToProps, mapDispatchToProps))(SignInFormBase);
 
 export default SignInPage;
 

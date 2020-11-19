@@ -15,7 +15,7 @@ import { initialize, change, reset } from 'redux-form';
  * @param {String} formName The name of the redux-form
  * @param {Array[String]} formFields The array of the fields of the redux-form
  */
-export const createInitFormData = formName => formData => initialize(formName, formData, true);
+export const createInitFormData = (formName) => (formData) => initialize(formName, formData, true);
 
 /**
  * This function is a redux action creator for redux-form
@@ -32,8 +32,7 @@ export const createInitFormData = formName => formData => initialize(formName, f
  *
  * @param {String} fieldName
  */
-export const createUpdateValue = formName => (fieldName, value) =>
-  change(formName, fieldName, value);
+export const createUpdateValue = (formName) => (fieldName, value) => change(formName, fieldName, value);
 
 /**
  * This function is a redux action creator for redux-form
@@ -54,7 +53,7 @@ export const createUpdateValue = formName => (fieldName, value) =>
  * @param {String} fieldName
  * @param {String} formName
  */
-export const createResetForm = formName => () => reset(formName);
+export const createResetForm = (formName) => () => reset(formName);
 
 /**
  * Pass the value of a field from a redux-form, it will normalize it for the API
@@ -66,9 +65,9 @@ export const createResetForm = formName => () => reset(formName);
  * @param data
  * @return {*}
  */
-export const normalizeFieldValue = data => {
+export const normalizeFieldValue = (data) => {
   if (Array.isArray(data)) {
-    return data.map(currentData => normalizeFieldValue(currentData));
+    return data.map((currentData) => normalizeFieldValue(currentData));
   }
   if (data !== null && typeof data === 'object' && typeof data.value !== 'undefined') {
     return normalizeFieldValue(data.value);

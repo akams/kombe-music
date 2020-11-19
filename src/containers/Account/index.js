@@ -6,7 +6,7 @@ import PasswordChangeForm from '../../components/PasswordChange';
 
 const AccountPage = () => (
   <AuthUserContext.Consumer>
-    {authUser => (
+    {(authUser) => (
       <div>
         <h1>Account: {authUser.email}</h1>
         <PasswordForgetForm />
@@ -16,6 +16,6 @@ const AccountPage = () => (
   </AuthUserContext.Consumer>
 );
 
-const authCondition = authUser => !!authUser;
+const authCondition = (authUser) => !!authUser;
 
 export default withAuthorization(authCondition)(AccountPage);

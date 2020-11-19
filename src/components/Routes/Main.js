@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 
-import SideMenu from '../SideMenu'
+import SideMenu from '../SideMenu';
 import Navigation from '../Navigation';
 import PasswordForgetPage from '../PasswordForget';
 
@@ -15,12 +15,11 @@ import AccountPage from '../../containers/Account';
 import AdminPage from '../../containers/Admin';
 import UploadFile from '../../containers/User/UploadFile';
 import SignUpArtist from '../../containers/SignUp/SignUpArtist';
-import MusicPlayer from '../../components/MusicPlayer';
+import MusicPlayer from '../MusicPlayer';
 
 import * as ROUTES from '../../constants/routes';
 import { withAuthentication } from '../Session';
 import { dispatchSetUsers } from '../../redux/action/user';
-
 
 import '../../App.css';
 
@@ -31,14 +30,13 @@ class App extends Component {
     this.loadUserFromToken();
   }
 
-
   loadUserFromToken() {
-    let token = sessionStorage.getItem('cookie_user');
+    const token = sessionStorage.getItem('cookie_user');
     if (!token || token === '') {
-      //if there is no token, dont bother
+      // if there is no token, dont bother
       return;
     }
-    console.log({token})
+    console.log({ token });
     return this.props.dispatchSetUsersFunction(JSON.parse(token));
   }
 
@@ -50,10 +48,7 @@ class App extends Component {
           <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
           <Route path={ROUTES.ARTIST_SIGN_UP} component={SignUpArtist} />
           <Route path={ROUTES.SIGN_IN} component={SignInPage} />
-          <Route
-            path={ROUTES.PASSWORD_FORGET}
-            component={PasswordForgetPage}
-          />
+          <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} />
           <Route path={ROUTES.HOME} component={HomePage} />
           <Route path={ROUTES.ACCOUNT} component={AccountPage} />
           <Route path={ROUTES.ADMIN} component={AdminPage} />
@@ -66,19 +61,11 @@ class App extends Component {
 }
 
 const mapDispatchToProps = {
-  dispatchSetUsersFunction: user => dispatchSetUsers(user),
+  dispatchSetUsersFunction: (user) => dispatchSetUsers(user),
 };
 
-const mapStateToProps = () => ({
-});
+const mapStateToProps = () => ({});
 
-
-const AppRedux = compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )
-)(App);
-
+const AppRedux = compose(connect(mapStateToProps, mapDispatchToProps))(App);
 
 export default withAuthentication(AppRedux);

@@ -16,10 +16,10 @@ class AdminPage extends Component {
   componentDidMount() {
     this.setState({ loading: true });
 
-    this.props.firebase.users().on('value', snapshot => {
+    this.props.firebase.users().on('value', (snapshot) => {
       const usersObject = snapshot.val();
 
-      const usersList = Object.keys(usersObject).map(key => ({
+      const usersList = Object.keys(usersObject).map((key) => ({
         ...usersObject[key],
         uid: key,
       }));
@@ -40,17 +40,15 @@ class AdminPage extends Component {
 
     return (
       <AuthUserContext.Consumer>
-        {authUser => {
-          return (
-            <div>
-              <h1>Account email --->: {authUser.email}</h1>
+        {(authUser) => (
+          <div>
+            <h1>Account email --->: {authUser.email}</h1>
 
-              {loading && <div>Loading ...</div>}
+            {loading && <div>Loading ...</div>}
 
-              <UserList users={users} />
-            </div>
-          )
-        }}
+            <UserList users={users} />
+          </div>
+        )}
       </AuthUserContext.Consumer>
     );
   }
@@ -58,7 +56,7 @@ class AdminPage extends Component {
 
 const UserList = ({ users }) => (
   <ul>
-    {users.map(user => (
+    {users.map((user) => (
       <li key={user.uid}>
         <span>
           <strong>ID:</strong> {user.uid}
@@ -74,7 +72,7 @@ const UserList = ({ users }) => (
   </ul>
 );
 
-const authCondition = authUser => !!authUser;
+const authCondition = (authUser) => !!authUser;
 
 const withAut = withAuthorization(authCondition)(AdminPage);
 

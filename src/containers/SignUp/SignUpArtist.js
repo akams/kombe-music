@@ -8,7 +8,7 @@ import * as ROUTES from '../../constants/routes';
 import ENV from '../../constants/environment/common.env';
 
 const RESOURCE = 'kmUsersFunctions/api/v1';
-const requestSignUp = payload => axios.post(ENV.apiUrl + `${RESOURCE}/signup`, payload);
+const requestSignUp = (payload) => axios.post(`${ENV.apiUrl}${RESOURCE}/signup`, payload);
 
 const SignUpPage = () => (
   <div>
@@ -39,23 +39,12 @@ class SignUpFormBase extends Component {
     this.state = { ...INITIAL_STATE };
   }
 
-  onSubmit = event => {
-    const {
-      lastName,
-      firstName,
-      birthDate,
-      address,
-      city,
-      cp,
-      country,
-      username,
-      email,
-      passwordOne,
-    } = this.state;
+  onSubmit = (event) => {
+    const { lastName, firstName, birthDate, address, city, cp, country, username, email, passwordOne } = this.state;
 
     this.props.firebase
       .doCreateUserWithEmailAndPassword(email, passwordOne)
-      .then(authUser => {
+      .then((authUser) => {
         requestSignUp({
           uid: authUser.user.uid,
           lastName,
@@ -67,24 +56,24 @@ class SignUpFormBase extends Component {
           country,
           username,
           email,
-          typeAccount: 'art'
+          typeAccount: 'art',
         })
           .then(() => {
             this.setState({ ...INITIAL_STATE });
             this.props.history.push(ROUTES.HOME);
           })
-          .catch(error => {
+          .catch((error) => {
             this.setState({ error });
           });
       })
-      .catch(error => {
+      .catch((error) => {
         this.setState({ error });
       });
 
     event.preventDefault();
   };
 
-  onChange = event => {
+  onChange = (event) => {
     this.setState({ [event.target.name]: event.target.value });
   };
 
@@ -104,36 +93,67 @@ class SignUpFormBase extends Component {
       error,
     } = this.state;
 
-    const isInvalid =
-      passwordOne !== passwordTwo ||
-      passwordOne === '' ||
-      email === '' ||
-      username === '';
+    const isInvalid = passwordOne !== passwordTwo || passwordOne === '' || email === '' || username === '';
 
     return (
-      <Container style={{padding: '5%', textAlign: 'left'}} fluid={true}>
+      <Container style={{ padding: '5%', textAlign: 'left' }} fluid>
         <Form onSubmit={this.onSubmit}>
           <FormGroup>
             <Label for="lastName">Nom</Label>
-            <Input type="text" name="lastName" id="lastName" placeholder="Dupont" value={lastName} onChange={this.onChange} />
+            <Input
+              type="text"
+              name="lastName"
+              id="lastName"
+              placeholder="Dupont"
+              value={lastName}
+              onChange={this.onChange}
+            />
           </FormGroup>
           <FormGroup>
             <Label for="firstName">Prénom</Label>
-            <Input type="text" name="firstName" id="firstName" placeholder="Jean" value={firstName} onChange={this.onChange} />
+            <Input
+              type="text"
+              name="firstName"
+              id="firstName"
+              placeholder="Jean"
+              value={firstName}
+              onChange={this.onChange}
+            />
           </FormGroup>
           <FormGroup>
             <Label for="birthDate">Date de naissance</Label>
-            <Input type="text" name="birthDate" id="birthDate" placeholder="01/01/1992" value={birthDate} onChange={this.onChange} />
+            <Input
+              type="text"
+              name="birthDate"
+              id="birthDate"
+              placeholder="01/01/1992"
+              value={birthDate}
+              onChange={this.onChange}
+            />
           </FormGroup>
           <FormGroup>
             <Label for="address">Adresse</Label>
-            <Input type="text" name="address" id="address" placeholder="3 rue jean" value={address} onChange={this.onChange} />
+            <Input
+              type="text"
+              name="address"
+              id="address"
+              placeholder="3 rue jean"
+              value={address}
+              onChange={this.onChange}
+            />
           </FormGroup>
           <Row form>
             <Col md={6}>
               <FormGroup>
                 <Label for="city">Ville</Label>
-                <Input type="text" name="city" id="city" placeholder="Libreville" value={city} onChange={this.onChange} />
+                <Input
+                  type="text"
+                  name="city"
+                  id="city"
+                  placeholder="Libreville"
+                  value={city}
+                  onChange={this.onChange}
+                />
               </FormGroup>
             </Col>
             <Col md={4}>
@@ -145,27 +165,57 @@ class SignUpFormBase extends Component {
             <Col md={2}>
               <FormGroup>
                 <Label for="country">Pays</Label>
-                <Input type="text" name="country" id="country" placeholder="Gabon" value={country} onChange={this.onChange} />
-              </FormGroup>  
+                <Input
+                  type="text"
+                  name="country"
+                  id="country"
+                  placeholder="Gabon"
+                  value={country}
+                  onChange={this.onChange}
+                />
+              </FormGroup>
             </Col>
           </Row>
           <FormGroup>
             <Label for="email">Email</Label>
-            <Input type="email" name="email" id="email" placeholder="samuel-k@email.com" value={email} onChange={this.onChange} />
+            <Input
+              type="email"
+              name="email"
+              id="email"
+              placeholder="samuel-k@email.com"
+              value={email}
+              onChange={this.onChange}
+            />
           </FormGroup>
           <FormGroup>
             <Label for="username">username</Label>
-            <Input type="text" name="username" id="username" placeholder="samuel-k" value={username} onChange={this.onChange} />
+            <Input
+              type="text"
+              name="username"
+              id="username"
+              placeholder="samuel-k"
+              value={username}
+              onChange={this.onChange}
+            />
           </FormGroup>
           <FormGroup>
             <Label for="examplePassword">Password</Label>
-            <Input type="password" name="passwordOne" id="examplePassword" value={passwordOne} onChange={this.onChange} type="password" />
+            <Input
+              type="password"
+              name="passwordOne"
+              id="examplePassword"
+              value={passwordOne}
+              onChange={this.onChange}
+              type="password"
+            />
           </FormGroup>
           <FormGroup>
             <Label for="passwordTwo">Confirmer password</Label>
             <Input type="password" name="passwordTwo" id="passwordTwo" value={passwordTwo} onChange={this.onChange} />
           </FormGroup>
-          <Button disabled={isInvalid} type="submit">Sign Up</Button>
+          <Button disabled={isInvalid} type="submit">
+            Sign Up
+          </Button>
         </Form>
         {error && <p>{error.message}</p>}
       </Container>

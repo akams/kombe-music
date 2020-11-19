@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import { Nav, NavItem, NavLink } from 'reactstrap';
 
 import SignOutButton from '../../containers/SignOut';
@@ -12,26 +12,20 @@ class Navigator extends React.Component {
     return (
       <div>
         <AuthUserContext.Consumer>
-          {authUser =>
-            authUser ? <NavigationAuth /> : <NavigationNonAuth />
-          }
+          {(authUser) => (authUser ? <NavigationAuth /> : <NavigationNonAuth />)}
         </AuthUserContext.Consumer>
       </div>
-    )
+    );
   }
 }
-
 
 const Navigation = () => (
   <div>
     <AuthUserContext.Consumer>
-      {authUser =>
-        authUser ? <NavigationAuth /> : <NavigationNonAuth />
-      }
+      {(authUser) => (authUser ? <NavigationAuth /> : <NavigationNonAuth />)}
     </AuthUserContext.Consumer>
   </div>
 );
-
 
 const NavigationNonAuth = () => (
   <Nav>
@@ -46,7 +40,7 @@ const NavigationNonAuth = () => (
       </div>
     </NavItem>
   </Nav>
-)
+);
 
 const NavigationAuth = () => (
   <Nav>
