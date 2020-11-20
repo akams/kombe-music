@@ -11,17 +11,6 @@ $time-line-width: 240px;
 $transition: .3s all ease;
 
 body{
-  font-family: 'Rubik', sans-serif;
-  color: $base;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  background: #000;
-  h1{
-    font-size: 36px;
-    margin-bottom: 0;
-  }
   .card{
     display: flex;
     flex-direction: column;

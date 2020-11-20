@@ -5,7 +5,7 @@ import { ConnectedRouter } from 'connected-react-router';
 import { ToastContainer } from 'react-toastify';
 import 'normalize.css';
 import './index.css';
-// import './otherCard.scss';
+import { GlobalStyles } from './global-styles';
 import App from './app';
 import Firebase from './firebase/firebase.prod';
 import FirebaseContext from './context/firebase';
@@ -18,6 +18,7 @@ export const myStore = configureStore();
 
 ReactDOM.render(
   <FirebaseContext.Provider value={new Firebase()}>
+    <GlobalStyles />
     <Provider store={myStore}>
       <ConnectedRouter history={history}>
         <App dispatch={myStore.dispatch} />
