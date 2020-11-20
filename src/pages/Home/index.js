@@ -1,7 +1,8 @@
 import React from 'react';
+import MusicPlayer from '../../components/MusicPlayer';
 
 function Home() {
-  return <h1>Home</h1>;
+  return <MusicPlayer />;
 }
 
 export default Home;

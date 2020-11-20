@@ -36,9 +36,9 @@ function App(props) {
         <UnProtectedRoute path={ROUTES.SIGN_UP_END}>
           <SignupEnd dispatch={dispatch} />
         </UnProtectedRoute>
-        <ProtectedRoute exact path={ROUTES.HOME}>
+        <UnProtectedRoute exact path={ROUTES.HOME}>
           <HomePage />
-        </ProtectedRoute>
+        </UnProtectedRoute>
         <Route path="*" component={NotFound} />
       </Switch>
     </Router>

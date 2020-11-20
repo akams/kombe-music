@@ -1,63 +1,87 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Nav, NavItem, NavLink, Container, Row, Col } from 'reactstrap';
-import { Slider, Direction, PlayerIcon } from 'react-player-controls';
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/interactive-supports-focus */
+import React, { Component } from 'react';
 import ReactPlayer from 'react-player';
-import Duration from './Duration';
-import ProgressBar from './Slider';
+import { FaBackward, FaForward, FaPlay, FaPause } from 'react-icons/fa';
 
-import './index.css';
+import { formatForPlayer as format } from '../../helpers/datetime';
 
-class MusicPlayer extends React.Component {
-  state = {
-    url: null,
-    pip: false,
-    playing: true,
-    controls: false,
-    light: false,
-    volume: 0.8,
-    muted: false,
-    played: 0,
-    loaded: 0,
-    duration: 0,
-    playbackRate: 1.0,
-    loop: false,
-  };
+import './index.scss';
 
-  load = (url) => {
-    this.setState({
-      url,
-      played: 0,
-      loaded: 0,
+class Player extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      index: 3,
+      musicList: [
+        {
+          name: 'Nice piano and ukulele',
+          author: 'Royalty',
+          img: 'https://www.bensound.com/bensound-img/buddy.jpg',
+          audio: 'https://www.bensound.com/bensound-music/bensound-buddy.mp3',
+          duration: '2:02',
+        },
+        {
+          name: 'Gentle acoustic',
+          author: 'Acoustic',
+          img: 'https://www.bensound.com/bensound-img/sunny.jpg',
+          audio: 'https://www.bensound.com//bensound-music/bensound-sunny.mp3',
+          duration: '2:20',
+        },
+        {
+          name: 'Corporate motivational',
+          author: 'Corporate',
+          img: 'https://www.bensound.com/bensound-img/energy.jpg',
+          audio: 'https://www.bensound.com/bensound-music/bensound-energy.mp3',
+          duration: '2:59',
+        },
+        {
+          name: 'Slow cinematic',
+          author: 'Royalty',
+          img: 'https://www.bensound.com/bensound-img/slowmotion.jpg',
+          audio: 'https://www.bensound.com/bensound-music/bensound-slowmotion.mp3',
+          duration: '3:26',
+        },
+      ],
       pip: false,
-    });
-  };
+      playing: false,
+      controls: false,
+      light: false,
+      volume: 0.8,
+      muted: false,
+      played: 0,
+      duration: 0,
+      playbackRate: 1.0,
+      loop: false,
+    };
+    this.audioRef = React.createRef();
+  }
 
   handlePlayPause = () => {
-    this.setState({ playing: !this.state.playing });
+    const { playing } = this.state;
+    this.setState({ playing: !playing });
   };
 
   handleStop = () => {
-    this.setState({ url: null, playing: false });
+    this.setState({ playing: false });
   };
 
   handleToggleControls = () => {
-    const { url } = this.state;
-    this.setState(
-      {
-        controls: !this.state.controls,
-        url: null,
-      },
-      () => this.load(url)
-    );
+    const { controls } = this.state;
+    this.setState({
+      controls: !controls,
+    });
   };
 
   handleToggleLight = () => {
-    this.setState({ light: !this.state.light });
+    const { light } = this.state;
+    this.setState({ light: !light });
   };
 
   handleToggleLoop = () => {
-    this.setState({ loop: !this.state.loop });
+    const { loop } = this.state;
+    this.setState({ loop: !loop });
   };
 
   handleVolumeChange = (e) => {
@@ -65,7 +89,8 @@ class MusicPlayer extends React.Component {
   };
 
   handleToggleMuted = () => {
-    this.setState({ muted: !this.state.muted });
+    const { muted } = this.state;
+    this.setState({ muted: !muted });
   };
 
   handleSetPlaybackRate = (e) => {
@@ -73,55 +98,48 @@ class MusicPlayer extends React.Component {
   };
 
   handleTogglePIP = () => {
-    this.setState({ pip: !this.state.pip });
+    const { pip } = this.state;
+    this.setState({ pip: !pip });
   };
 
   handlePlay = () => {
-    console.log('onPlay');
     this.setState({ playing: true });
   };
 
   handleEnablePIP = () => {
-    console.log('onEnablePIP');
     this.setState({ pip: true });
   };
 
   handlePause = () => {
-    console.log('onPause');
     this.setState({ playing: false });
   };
 
-  handleSeekMouseDown = (e) => {
-    console.log('handleSeekMouseDown ==>', e.target.value);
+  handleSeekMouseDown = () => {
     this.setState({ seeking: true });
   };
 
   handleSeekChange = (e) => {
-    console.log('handleSeekChange ==>', e.target.value);
     this.setState({ played: parseFloat(e.target.value) });
   };
 
   handleSeekMouseUp = (e) => {
-    console.log('handleSeekMouseUp ==>', e.target.value);
     this.setState({ seeking: false });
     this.player.seekTo(parseFloat(e.target.value));
   };
 
   handleProgress = (state) => {
-    // console.log('onProgress', state)
-    // We only want to update time slider if we are not currently seeking
-    if (!this.state.seeking) {
+    const { seeking } = this.state;
+    if (!seeking) {
       this.setState(state);
     }
   };
 
   handleEnded = () => {
-    console.log('onEnded');
-    this.setState({ playing: this.state.loop });
+    const { loop } = this.state;
+    this.setState({ playing: loop });
   };
 
   handleDuration = (duration) => {
-    // console.log('onDuration', duration)
     this.setState({ duration });
   };
 
@@ -129,9 +147,33 @@ class MusicPlayer extends React.Component {
     this.player = player;
   };
 
+  nextSong = () => {
+    const { musicList, index } = this.state;
+
+    this.setState({
+      index: (index + 1) % musicList.length,
+    });
+  };
+
+  prevSong = () => {
+    const { musicList, index } = this.state;
+
+    this.setState({
+      index: (index + musicList.length - 1) % musicList.length,
+    });
+  };
+
+  clickAudio = (key) => {
+    this.setState({
+      index: key,
+    });
+    this.handlePlayPause();
+  };
+
   render() {
     const {
-      url,
+      musicList,
+      index,
       playing,
       controls,
       light,
@@ -139,131 +181,110 @@ class MusicPlayer extends React.Component {
       muted,
       loop,
       played,
-      loaded,
       duration,
       playbackRate,
       pip,
     } = this.state;
 
-    const IconPlayPause = (playing) => {
-      if (playing) {
-        return <PlayerIcon.Pause width={32} height={32} style={{ marginRight: 32 }} onClick={this.handlePlayPause} />;
-      }
-      return <PlayerIcon.Play width={32} height={32} style={{ marginRight: 32 }} onClick={this.handlePlayPause} />;
-    };
+    const currentSong = musicList[index];
+    const currentTime = duration * played;
 
     return (
-      <div className="music-player-panel">
-        <section className="panel-content">
-          <div className="content-left">
-            <div className="content">
-              <div
-                className="img-content"
-                style={{
-                  backgroundImage: `url("https://res.cloudinary.com/ehsanahmadi/image/upload/v1573758778/Sirvan-Khosravi-Dorost-Nemisham_glicks.jpg")`,
-                }}
-              />
-              <span className="audio-title" title="Dorost Nemisham - Sirvan Khosravi">
-                Dorost Nemisham - Sirvan Khosravi
+      <div className="card">
+        <div className="current-song">
+          <ReactPlayer
+            ref={this.ref}
+            className="react-player"
+            width="100%"
+            height="100%"
+            url={currentSong.audio}
+            pip={pip}
+            playing={playing}
+            controls={controls}
+            light={light}
+            loop={loop}
+            playbackRate={playbackRate}
+            volume={volume}
+            muted={muted}
+            onReady={() => console.log('onReady')}
+            onStart={() => console.log('onStart')}
+            onPlay={this.handlePlay}
+            onEnablePIP={this.handleEnablePIP}
+            onDisablePIP={this.handleDisablePIP}
+            onPause={this.handlePause}
+            onBuffer={() => console.log('onBuffer')}
+            onSeek={() => console.log('onSeek')}
+            onEnded={this.handleEnded}
+            onError={() => console.log('onError')}
+            onProgress={this.handleProgress}
+            onDuration={this.handleDuration}
+          />
+          <div className="img-wrap">
+            <img src={currentSong.img} alt="img song" />
+          </div>
+          <span className="song-name">{currentSong.name}</span>
+          <span className="song-autor">{currentSong.author}</span>
+
+          <div className="time">
+            <div className="current-time">
+              <time dateTime={`P${Math.round(currentTime)}S`}>{format(currentTime)}</time>
+            </div>
+            <div className="end-time">{currentSong.duration}</div>
+          </div>
+          <div className="timeline">
+            <input
+              type="range"
+              min={0}
+              max={0.999999}
+              step="any"
+              value={played}
+              onMouseDown={this.handleSeekMouseDown}
+              onChange={this.handleSeekChange}
+              onMouseUp={this.handleSeekMouseUp}
+            />
+          </div>
+
+          <div className="controls">
+            <button type="button" onClick={this.prevSong} className="prev prev-next current-btn">
+              <FaBackward />
+            </button>
+
+            <button type="button" onClick={this.handlePlayPause} className="play current-btn">
+              {!playing ? <FaPlay /> : <FaPause />}
+            </button>
+            <button type="button" onClick={this.nextSong} className="next prev-next current-btn">
+              <FaForward />
+            </button>
+          </div>
+        </div>
+        <div className="play-list">
+          {musicList.map((music, key = 0) => (
+            <div
+              role="button"
+              key={key}
+              onClick={() => this.clickAudio(key)}
+              className={`track ${index === key && !playing ? 'current-audio' : ''}${
+                index === key && playing ? 'play-now' : ''
+              }`}
+            >
+              <img className="track-img" src={music.img} alt="icon music" />
+              <div className="track-discr">
+                <span className="track-name">{music.name}</span>
+                <span className="track-author">{music.author}</span>
+              </div>
+              <span className="track-duration">
+                {index === key ? (
+                  <time dateTime={`P${Math.round(currentTime)}S`}>{format(currentTime)}</time>
+                ) : (
+                  music.duration
+                )}
               </span>
             </div>
-          </div>
-          <div className="content-middle">
-            <section className="section">
-              <div className="player-wrapper">
-                <ReactPlayer
-                  ref={this.ref}
-                  className="react-player"
-                  width="100%"
-                  height="100%"
-                  url={url}
-                  pip={pip}
-                  playing={playing}
-                  controls={controls}
-                  light={light}
-                  loop={loop}
-                  playbackRate={playbackRate}
-                  volume={volume}
-                  muted={muted}
-                  onReady={() => console.log('onReady')}
-                  onStart={() => console.log('onStart')}
-                  onPlay={this.handlePlay}
-                  onEnablePIP={this.handleEnablePIP}
-                  onDisablePIP={this.handleDisablePIP}
-                  onPause={this.handlePause}
-                  onBuffer={() => console.log('onBuffer')}
-                  onSeek={(e) => console.log('onSeek', e)}
-                  onEnded={this.handleEnded}
-                  onError={(e) => console.log('onError', e)}
-                  onProgress={this.handleProgress}
-                  onDuration={this.handleDuration}
-                />
-              </div>
-
-              <Row>
-                <Col>{IconPlayPause(playing)}</Col>
-              </Row>
-              <Row>
-                <Col xs="2">
-                  <Duration seconds={duration * played} />
-                </Col>
-                <Col className="p-0">
-                  <input
-                    className="w-100"
-                    type="range"
-                    min={0}
-                    max={0.999999}
-                    step="any"
-                    value={played}
-                    onMouseDown={this.handleSeekMouseDown}
-                    onChange={this.handleSeekChange}
-                    onMouseUp={this.handleSeekMouseUp}
-                  />
-                </Col>
-                <Col xs="2">
-                  <Duration seconds={duration} />
-                </Col>
-              </Row>
-            </section>
-            <section className="section">
-              <table>
-                <tbody>
-                  <tr>
-                    <th>Custom URL</th>
-                    <td>
-                      <input
-                        ref={(input) => {
-                          this.urlInput = input;
-                        }}
-                        type="text"
-                        placeholder="Enter URL"
-                      />
-                      <button onClick={() => this.setState({ url: this.urlInput.value })}>Load</button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </section>
-          </div>
-          <div className="content-right">
-            <Row>
-              <Col xs="2">
-                <span>Volume</span>
-              </Col>
-              <Col>
-                <input type="range" min={0} max={1} step="any" value={volume} onChange={this.handleVolumeChange} />
-              </Col>
-            </Row>
-            <Row>
-              <Col xs="2">
-                <span>Loop</span> <input id="loop" type="checkbox" checked={loop} onChange={this.handleToggleLoop} />
-              </Col>
-            </Row>
-          </div>
-        </section>
+          ))}
+        </div>
       </div>
     );
   }
 }
 
-export default MusicPlayer;
+export default Player;
