@@ -13,37 +13,8 @@ class Player extends Component {
     super(props);
 
     this.state = {
-      index: 3,
-      musicList: [
-        {
-          name: 'Nice piano and ukulele',
-          author: 'Royalty',
-          img: 'https://www.bensound.com/bensound-img/buddy.jpg',
-          audio: 'https://www.bensound.com/bensound-music/bensound-buddy.mp3',
-          duration: '2:02',
-        },
-        {
-          name: 'Gentle acoustic',
-          author: 'Acoustic',
-          img: 'https://www.bensound.com/bensound-img/sunny.jpg',
-          audio: 'https://www.bensound.com//bensound-music/bensound-sunny.mp3',
-          duration: '2:20',
-        },
-        {
-          name: 'Corporate motivational',
-          author: 'Corporate',
-          img: 'https://www.bensound.com/bensound-img/energy.jpg',
-          audio: 'https://www.bensound.com/bensound-music/bensound-energy.mp3',
-          duration: '2:59',
-        },
-        {
-          name: 'Slow cinematic',
-          author: 'Royalty',
-          img: 'https://www.bensound.com/bensound-img/slowmotion.jpg',
-          audio: 'https://www.bensound.com/bensound-music/bensound-slowmotion.mp3',
-          duration: '3:26',
-        },
-      ],
+      index: 0,
+      musicList: [],
       pip: false,
       playing: false,
       controls: false,
@@ -57,6 +28,18 @@ class Player extends Component {
     };
     this.audioRef = React.createRef();
   }
+
+  componentDidUpdate(prevProps) {
+    const { musics } = this.props;
+    if (musics !== prevProps.musics) {
+      console.log('has change--->>', { musics });
+      this.handleFetchData(musics);
+    }
+  }
+
+  handleFetchData = (data) => {
+    this.setState({ musicList: data });
+  };
 
   handlePlayPause = () => {
     const { playing } = this.state;
@@ -157,7 +140,6 @@ class Player extends Component {
 
   prevSong = () => {
     const { musicList, index } = this.state;
-
     this.setState({
       index: (index + musicList.length - 1) % musicList.length,
     });
@@ -167,7 +149,6 @@ class Player extends Component {
     this.setState({
       index: key,
     });
-    this.handlePlayPause();
   };
 
   render() {
@@ -189,6 +170,10 @@ class Player extends Component {
     const currentSong = musicList[index];
     const currentTime = duration * played;
 
+    if (musicList.length === 0) {
+      return <div>On waiting</div>;
+    }
+
     return (
       <div className="card">
         <div className="current-song">
@@ -197,7 +182,7 @@ class Player extends Component {
             className="react-player"
             width="100%"
             height="100%"
-            url={currentSong.audio}
+            url={currentSong.audioUrl}
             pip={pip}
             playing={playing}
             controls={controls}
@@ -220,7 +205,7 @@ class Player extends Component {
             onDuration={this.handleDuration}
           />
           <div className="img-wrap">
-            <img src={currentSong.img} alt="img song" />
+            <img src={currentSong.imgUrl} alt="img song" />
           </div>
           <span className="song-name">{currentSong.name}</span>
           <span className="song-autor">{currentSong.author}</span>
@@ -267,7 +252,7 @@ class Player extends Component {
                 index === key && playing ? 'play-now' : ''
               }`}
             >
-              <img className="track-img" src={music.img} alt="icon music" />
+              <img className="track-img" src={music.imgUrl} alt="icon music" />
               <div className="track-discr">
                 <span className="track-name">{music.name}</span>
                 <span className="track-author">{music.author}</span>
