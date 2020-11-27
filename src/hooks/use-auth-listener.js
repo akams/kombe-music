@@ -12,20 +12,21 @@ export default function useAuthListener(firebase, dispatchSetUsersFunction) {
       setUser(val);
     });
 
-    const authInterceptor = axios.interceptors.request.use(
-      async (config) => {
-        const token = await firebase.auth.currentUser.getIdToken();
-        config.headers = {
-          ...getHeaders(token),
-        };
-        return config;
-      },
-      (error) => Promise.reject(error)
-    );
+    // const authInterceptor = axios.interceptors.request.use(
+    //   async (config) => {
+    //     const token = await firebase.auth.currentUser.getIdToken();
+    //     console.log({ token });
+    //     config.headers = {
+    //       ...getHeaders(token),
+    //     };
+    //     return config;
+    //   },
+    //   (error) => Promise.reject(error)
+    // );
 
     return () => {
       listener();
-      axios.interceptors.request.eject(authInterceptor);
+      // axios.interceptors.request.eject(authInterceptor);
     };
   }, []);
 
