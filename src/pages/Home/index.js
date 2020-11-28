@@ -12,8 +12,18 @@ function Home() {
   useEffect(() => {
     async function fetch() {
       const res = await getMusics();
-      console.log({ res });
-      setMusics(res.data);
+      setMusics([
+        res.data[0],
+        res.data[0],
+        res.data[0],
+        res.data[0],
+        res.data[0],
+        res.data[0],
+        res.data[0],
+        res.data[0],
+        res.data[0],
+        res.data[0],
+      ]);
     }
     fetch();
   }, []);
