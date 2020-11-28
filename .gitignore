@@ -5,6 +5,7 @@
 /.pnp
 .pnp.js
 .js.bak
+kombeMusic.code-workspace
 
 # testing
 /coverage
