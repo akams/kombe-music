@@ -32,7 +32,6 @@ class Player extends Component {
   componentDidUpdate(prevProps) {
     const { musics } = this.props;
     if (musics !== prevProps.musics) {
-      console.log('has change--->>', { musics });
       this.handleFetchData(musics);
     }
   }
@@ -106,6 +105,15 @@ class Player extends Component {
   };
 
   handleSeekMouseUp = (e) => {
+    this.setState({ seeking: false });
+    this.player.seekTo(parseFloat(e.target.value));
+  };
+
+  handleSeekTouchStart = () => {
+    this.setState({ seeking: true });
+  };
+
+  handleSeekTouchEnd = (e) => {
     this.setState({ seeking: false });
     this.player.seekTo(parseFloat(e.target.value));
   };
@@ -226,6 +234,8 @@ class Player extends Component {
               onMouseDown={this.handleSeekMouseDown}
               onChange={this.handleSeekChange}
               onMouseUp={this.handleSeekMouseUp}
+              onTouchStart={this.handleSeekTouchStart}
+              onTouchEnd={this.handleSeekTouchEnd}
             />
           </div>
 
