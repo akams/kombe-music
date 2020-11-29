@@ -6,6 +6,8 @@ import { FaBackward, FaForward, FaPlay, FaPause } from 'react-icons/fa';
 
 import { formatForPlayer as format } from '../../helpers/datetime';
 
+import junglePicture from '../../assets/images/default/jungle-0.jpg';
+
 import './index.scss';
 
 class Player extends Component {
@@ -213,7 +215,11 @@ class Player extends Component {
             onDuration={this.handleDuration}
           />
           <div className="img-wrap">
-            <img src={currentSong.imgUrl} alt="img song" />
+            {currentSong.imgUrl ? (
+              <img src={currentSong.imgUrl} alt="img song" />
+            ) : (
+              <img src={junglePicture} alt="default img song" />
+            )}
           </div>
           <span className="song-name">{currentSong.name}</span>
           <span className="song-autor">{currentSong.author}</span>
@@ -262,7 +268,11 @@ class Player extends Component {
                 index === key && playing ? 'play-now' : ''
               }`}
             >
-              <img className="track-img" src={music.imgUrl} alt="icon music" />
+              {music.imgUrl ? (
+                <img className="track-img" src={music.imgUrl} alt="short icon song" />
+              ) : (
+                <img className="track-img" src={junglePicture} alt="default short icon song" />
+              )}
               <div className="track-discr">
                 <span className="track-name">{music.name}</span>
                 <span className="track-author">{music.author}</span>
