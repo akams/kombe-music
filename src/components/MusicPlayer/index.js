@@ -2,9 +2,11 @@
 /* eslint-disable jsx-a11y/interactive-supports-focus */
 import React, { Component } from 'react';
 import ReactPlayer from 'react-player';
+// import { Card, CardHeader, CardBody, Row, Col, Spinner } from 'reactstrap';
 import { FaBackward, FaForward, FaPlay, FaPause } from 'react-icons/fa';
 
 import { formatForPlayer as format } from '../../helpers/datetime';
+import PlayList from './PlayList';
 
 import junglePicture from '../../assets/images/default/jungle-0.jpg';
 
@@ -29,6 +31,7 @@ class Player extends Component {
       loop: false,
     };
     this.audioRef = React.createRef();
+    this.clickAudio = this.clickAudio.bind(this);
   }
 
   componentDidUpdate(prevProps) {
@@ -185,107 +188,88 @@ class Player extends Component {
     }
 
     return (
-      <div className="card">
-        <div className="current-song">
-          <ReactPlayer
-            ref={this.ref}
-            className="react-player"
-            width="100%"
-            height="100%"
-            url={currentSong.audioUrl}
-            pip={pip}
-            playing={playing}
-            controls={controls}
-            light={light}
-            loop={loop}
-            playbackRate={playbackRate}
-            volume={volume}
-            muted={muted}
-            onReady={() => console.log('onReady')}
-            onStart={() => console.log('onStart')}
-            onPlay={this.handlePlay}
-            onEnablePIP={this.handleEnablePIP}
-            onDisablePIP={this.handleDisablePIP}
-            onPause={this.handlePause}
-            onBuffer={() => console.log('onBuffer')}
-            onSeek={() => console.log('onSeek')}
-            onEnded={this.handleEnded}
-            onError={() => console.log('onError')}
-            onProgress={this.handleProgress}
-            onDuration={this.handleDuration}
-          />
-          <div className="img-wrap">
-            {currentSong.imgUrl ? (
-              <img src={currentSong.imgUrl} alt="img song" />
-            ) : (
-              <img src={junglePicture} alt="default img song" />
-            )}
-          </div>
-          <span className="song-name">{currentSong.name}</span>
-          <span className="song-autor">{currentSong.author}</span>
-
-          <div className="time">
-            <div className="current-time">
-              <time dateTime={`P${Math.round(currentTime)}S`}>{format(currentTime)}</time>
-            </div>
-            <div className="end-time">{currentSong.duration}</div>
-          </div>
-          <div className="timeline">
-            <input
-              type="range"
-              min={0}
-              max={0.999999}
-              step="any"
-              value={played}
-              onMouseDown={this.handleSeekMouseDown}
-              onChange={this.handleSeekChange}
-              onMouseUp={this.handleSeekMouseUp}
-              onTouchStart={this.handleSeekTouchStart}
-              onTouchEnd={this.handleSeekTouchEnd}
+      <div id="MusicPlayer">
+        <div className="card">
+          <div className="current-song">
+            <ReactPlayer
+              ref={this.ref}
+              className="react-player"
+              width="100%"
+              height="100%"
+              url={currentSong.audioUrl}
+              pip={pip}
+              playing={playing}
+              controls={controls}
+              light={light}
+              loop={loop}
+              playbackRate={playbackRate}
+              volume={volume}
+              muted={muted}
+              onReady={() => console.log('onReady')}
+              onStart={() => console.log('onStart')}
+              onPlay={this.handlePlay}
+              onEnablePIP={this.handleEnablePIP}
+              onDisablePIP={this.handleDisablePIP}
+              onPause={this.handlePause}
+              onBuffer={() => console.log('onBuffer')}
+              onSeek={() => console.log('onSeek')}
+              onEnded={this.handleEnded}
+              onError={() => console.log('onError')}
+              onProgress={this.handleProgress}
+              onDuration={this.handleDuration}
             />
-          </div>
-
-          <div className="controls">
-            <button type="button" onClick={this.prevSong} className="prev prev-next current-btn">
-              <FaBackward />
-            </button>
-
-            <button type="button" onClick={this.handlePlayPause} className="play current-btn">
-              {!playing ? <FaPlay /> : <FaPause />}
-            </button>
-            <button type="button" onClick={this.nextSong} className="next prev-next current-btn">
-              <FaForward />
-            </button>
-          </div>
-        </div>
-        <div className="play-list">
-          {musicList.map((music, key = 0) => (
-            <div
-              role="button"
-              key={key}
-              onClick={() => this.clickAudio(key)}
-              className={`track ${index === key && !playing ? 'current-audio' : ''}${
-                index === key && playing ? 'play-now' : ''
-              }`}
-            >
-              {music.imgUrl ? (
-                <img className="track-img" src={music.imgUrl} alt="short icon song" />
+            <div className="img-wrap">
+              {currentSong.imgUrl ? (
+                <img src={currentSong.imgUrl} alt="img song" />
               ) : (
-                <img className="track-img" src={junglePicture} alt="default short icon song" />
+                <img src={junglePicture} alt="default img song" />
               )}
-              <div className="track-discr">
-                <span className="track-name">{music.name}</span>
-                <span className="track-author">{music.author}</span>
-              </div>
-              <span className="track-duration">
-                {index === key ? (
-                  <time dateTime={`P${Math.round(currentTime)}S`}>{format(currentTime)}</time>
-                ) : (
-                  music.duration
-                )}
-              </span>
             </div>
-          ))}
+            <span className="song-name">{currentSong.name}</span>
+            <span className="song-autor">{currentSong.author}</span>
+
+            <div className="time">
+              <div className="current-time">
+                <time dateTime={`P${Math.round(currentTime)}S`}>{format(currentTime)}</time>
+              </div>
+              <div className="end-time">{currentSong.duration}</div>
+            </div>
+            <div className="timeline">
+              <input
+                type="range"
+                min={0}
+                max={0.999999}
+                step="any"
+                value={played}
+                onMouseDown={this.handleSeekMouseDown}
+                onChange={this.handleSeekChange}
+                onMouseUp={this.handleSeekMouseUp}
+                onTouchStart={this.handleSeekTouchStart}
+                onTouchEnd={this.handleSeekTouchEnd}
+              />
+            </div>
+
+            <div className="controls">
+              <button type="button" onClick={this.prevSong} className="prev prev-next current-btn">
+                <FaBackward />
+              </button>
+
+              <button type="button" onClick={this.handlePlayPause} className="play current-btn">
+                {!playing ? <FaPlay /> : <FaPause />}
+              </button>
+              <button type="button" onClick={this.nextSong} className="next prev-next current-btn">
+                <FaForward />
+              </button>
+            </div>
+          </div>
+          <PlayList
+            clickAudio={this.clickAudio}
+            musicList={musicList}
+            index={index}
+            playing={playing}
+            played={played}
+            duration={duration}
+          />
         </div>
       </div>
     );

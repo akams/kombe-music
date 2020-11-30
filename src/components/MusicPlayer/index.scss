@@ -10,7 +10,7 @@ $lighter-gray: rgba($gray, .1);
 $time-line-width: 240px;
 $transition: .3s all ease;
 
-body{
+#MusicPlayer{
   .card{
     display: flex;
     flex-direction: column;
@@ -116,6 +116,7 @@ body{
       padding-top: 15px;
       height: 180px;
       overflow-y: scroll;
+      overflow-x: hidden;
       .track{
         display: flex;
         align-items: center;
@@ -141,7 +142,7 @@ body{
           content: '';
           display: block;
           position: absolute;
-          left:17px;
+          left:33px;
           width: 57px;
           height: 57px;
           border-radius: calc( #{$border-radius} - 10px);
@@ -152,12 +153,12 @@ body{
         .track-img{
           filter: opacity(70%);
         }
-      }
-    .track-img{
-      width: 90px;
-      height: 63px;
-      border-radius: calc( #{$border-radius} - 10px);
-    }
+        }
+        .track-img{
+          width: 90px;
+          height: 63px;
+          border-radius: calc( #{$border-radius} - 10px);
+        }
     
         .track-discr{
           margin-left: 15px;
