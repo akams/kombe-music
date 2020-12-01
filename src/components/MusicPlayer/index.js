@@ -43,8 +43,10 @@ class Player extends Component {
   };
 
   handlePlayPause = () => {
-    const { playing } = this.state;
-    this.setState({ playing: !playing });
+    const { playing, musicList } = this.state;
+    if (musicList.length !== 0) {
+      this.setState({ playing: !playing });
+    }
   };
 
   handleStop = () => {
@@ -142,17 +144,20 @@ class Player extends Component {
 
   nextSong = () => {
     const { musicList, index } = this.state;
-
-    this.setState({
-      index: (index + 1) % musicList.length,
-    });
+    if (musicList.length !== 0) {
+      this.setState({
+        index: (index + 1) % musicList.length,
+      });
+    }
   };
 
   prevSong = () => {
     const { musicList, index } = this.state;
-    this.setState({
-      index: (index + musicList.length - 1) % musicList.length,
-    });
+    if (musicList.length !== 0) {
+      this.setState({
+        index: (index + musicList.length - 1) % musicList.length,
+      });
+    }
   };
 
   clickAudio = (key) => {
@@ -177,11 +182,17 @@ class Player extends Component {
       pip,
     } = this.state;
 
-    const currentSong = musicList[index];
+    let currentSong = musicList[index];
     const currentTime = duration * played;
 
-    if (musicList.length === 0) {
-      return <div>On waiting</div>;
+    if (!currentSong) {
+      currentSong = {
+        audioUrl: '',
+        name: '',
+        imgUrl: '',
+        author: '',
+        duration: '',
+      };
     }
 
     return (
@@ -259,14 +270,16 @@ class Player extends Component {
               </button>
             </div>
           </div>
-          <PlayList
-            clickAudio={this.clickAudio}
-            musicList={musicList}
-            index={index}
-            playing={playing}
-            played={played}
-            duration={duration}
-          />
+          {musicList.length !== 0 && (
+            <PlayList
+              clickAudio={this.clickAudio}
+              musicList={musicList}
+              index={index}
+              playing={playing}
+              played={played}
+              duration={duration}
+            />
+          )}
         </div>
       </div>
     );

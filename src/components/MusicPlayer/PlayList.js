@@ -19,9 +19,6 @@ class PlayList extends Component {
 
     const currentTime = duration * played;
 
-    if (musicList.length === 0) {
-      return <div>On waiting</div>;
-    }
     return (
       <div className="play-list">
         {musicList.map((music, key = 0) => (

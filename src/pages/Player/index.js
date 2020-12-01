@@ -19,7 +19,6 @@ function Player() {
     }
     fetch();
   }, []);
-  console.log({ idAlbum });
   return <PlayerContainer musics={musics} />;
 }
 
