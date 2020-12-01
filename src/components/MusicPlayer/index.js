@@ -1,8 +1,5 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/interactive-supports-focus */
 import React, { Component } from 'react';
 import ReactPlayer from 'react-player';
-// import { Card, CardHeader, CardBody, Row, Col, Spinner } from 'reactstrap';
 import { FaBackward, FaForward, FaPlay, FaPause } from 'react-icons/fa';
 
 import { formatForPlayer as format } from '../../helpers/datetime';
