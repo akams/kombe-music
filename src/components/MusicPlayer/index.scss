@@ -35,6 +35,10 @@ $transition: .3s all ease;
       border-radius: $border-radius;
       color: $base;
       background: $white;
+
+      .react-player {
+        display: none;
+      }
    
       audio{
         display: none;
