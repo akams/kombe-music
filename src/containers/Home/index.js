@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
   Container,
@@ -8,24 +8,18 @@ import {
   Input,
   Button,
   InputGroup,
-  InputGroupAddon,
-  Card,
-  CardTitle,
-  CardText,
   Row,
   Col,
   ListGroup,
   ListGroupItem,
 } from 'reactstrap';
-import Select from 'react-select';
+import { compose } from 'recompose';
+import { withRouter } from 'react-router-dom';
 
-import { withAuthorization } from '../../components/Session';
-
+import CardAlbum from '../../components/CardAlbum';
 import ENV from '../../constants/environment/common.env';
 
-const RESOURCE = 'kmUploadTracksMusic/api/v1';
-
-const getMusicalCategories = () => axios.get(`${ENV.apiUrl}${RESOURCE}/music-categories`);
+const getAlbums = () => axios.get(`${ENV.localApiUrl}/get-albums`);
 // const findArtist = value => axios.get(`${ENV.apiUrl}${RESOURCE}/findArtist=${value}`)
 const findArtist = (value = 2000) =>
   new Promise(function (resolve, reject) {
@@ -34,110 +28,60 @@ const findArtist = (value = 2000) =>
     console.log(`Wrapped setTimeout after ${value}ms`);
   });
 
-class Home extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      title: '',
-      selected: null,
-      musicalcategorie: [],
-    };
-  }
+function Home(props) {
+  const { history } = props;
+  const [title, setTitle] = useState('');
+  const [musicalcategorie, setMusicalCategorie] = useState([]);
 
-  componentDidMount() {
-    this.getMusicCategories();
-  }
+  useEffect(() => {
+    async function fetch() {
+      const res = await getAlbums();
+      setMusicalCategorie(res.data);
+    }
+    fetch();
+  }, []);
 
-  getMusicCategories() {
-    getMusicalCategories()
-      .then((resultat) => {
-        const musicalcategorie = resultat.data
-          .map((d) => ({
-            value: d.id,
-            label: d.data.label,
-          }))
-          .sort((a, b) => (a.label.toLowerCase() < b.label.toLowerCase() ? -1 : 1));
-        this.setState({ musicalcategorie });
-      })
-      .catch((e) => console.error(e));
-  }
-
-  onChange = (event) => {
+  const onChange = (event) => {
     const { value } = event.target;
-    console.log({ value });
-    this.setState({ title: event.target.value });
-    findArtist(value)
-      .then((res) => {
-        console.warn({ res });
-      })
-      .catch((e) => console.error(e));
+    setTitle(event.target.value);
+    // findArtist(value)
+    //   .then((res) => {
+    //     console.warn({ res });
+    //   })
+    //   .catch((e) => console.error(e));
   };
 
-  handleChangeSelect = (selected) => {
-    this.setState({ selected });
-  };
-
-  render() {
-    const { title, selected, musicalcategorie } = this.state;
-    return (
-      <div>
-        <h1>Home Page + recherche</h1>
-        <p>The Home Page is accessible by every signed in user.</p>
-        <Container style={{ padding: '5%', textAlign: 'left' }} fluid>
-          <Form>
-            <FormGroup>
-              <InputGroup>
-                <Label for="title" hidden>
-                  Titre
-                </Label>
-                <Input
-                  type="text"
-                  name="title"
-                  id="title"
-                  placeholder="Rechercher"
-                  value={title}
-                  onChange={this.onChange}
-                />
-              </InputGroup>
-            </FormGroup>
-          </Form>
-          <Row>
-            {musicalcategorie &&
-              musicalcategorie.map((m, index) => (
-                <Col key={m.value}>
-                  <Card body>
-                    <Button>{m.label}</Button>
-                  </Card>
-                </Col>
-              ))}
-          </Row>
-          <Row>
-            <Container fluid>
-              <h2>Titres</h2>
-              <ListGroup>
-                <ListGroupItem tag="button" action>
-                  Cras justo odio
-                </ListGroupItem>
-                <ListGroupItem tag="button" action>
-                  Dapibus ac facilisis in
-                </ListGroupItem>
-                <ListGroupItem tag="button" action>
-                  Morbi leo risus
-                </ListGroupItem>
-                <ListGroupItem tag="button" action>
-                  Porta ac consectetur ac
-                </ListGroupItem>
-                <ListGroupItem tag="button" action>
-                  Vestibulum at eros
-                </ListGroupItem>
-              </ListGroup>
-            </Container>
-          </Row>
-        </Container>
-      </div>
-    );
-  }
+  return (
+    <div>
+      <h1>Home Page + recherche</h1>
+      <p>The Home Page is accessible by every user.</p>
+      <Container style={{ padding: '5%', textAlign: 'left' }} fluid>
+        <Form>
+          <FormGroup>
+            <InputGroup>
+              <Label for="title" hidden>
+                Titre
+              </Label>
+              <Input type="text" name="title" id="title" placeholder="Rechercher" value={title} onChange={onChange} />
+            </InputGroup>
+          </FormGroup>
+        </Form>
+        <Row>
+          <Col xs={12} className="pt-6 pb-4">
+            <h1>Les derniers ajouts</h1>
+          </Col>
+          <Col xl="4" className="pb-3" onClick={() => history.push(`/player/all`)} role="button">
+            <CardAlbum title="Tous" />
+          </Col>
+          {musicalcategorie.map((m, index) => (
+            <Col xl="4" key={index} className="pb-3" onClick={() => history.push(`/player/${m.id}`)} role="button">
+              <CardAlbum title={m.name} />
+            </Col>
+          ))}
+        </Row>
+      </Container>
+    </div>
+  );
 }
 
-const condition = (authUser) => !!authUser;
-export default withAuthorization(condition)(Home);
+export default compose(withRouter)(Home);

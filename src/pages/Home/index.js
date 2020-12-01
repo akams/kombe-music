@@ -1,27 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React from 'react';
 import { compose } from 'recompose';
-import MusicPlayer from '../../components/MusicPlayer';
+import HomeContainer from '../../containers/Home';
 
 import { withFirebase } from '../../context/firebase';
 
-import ENV from '../../constants/environment/common.env';
-
-const getMusics = () => axios.get(`${ENV.apiUrl}/get-musics`);
-
-function Home(props) {
-  const { firebase } = props;
-  const [musics, setMusics] = useState([]);
-
-  useEffect(() => {
-    async function fetch() {
-      const res = await getMusics();
-      setMusics(res.data);
-    }
-    fetch();
-  }, []);
-
-  return <MusicPlayer musics={musics} />;
+function Home() {
+  return <HomeContainer />;
 }
 
 export default compose(withFirebase)(Home);
