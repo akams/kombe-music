@@ -5,7 +5,7 @@ import PlayerContainer from '../../containers/Player';
 
 import ENV from '../../constants/environment/common.env';
 
-const getMusics = (payload) => axios.get(`${ENV.localApiUrl}/get-musics`, payload);
+const getMusics = (payload) => axios.get(`${ENV.apiUrl}/get-musics`, payload);
 
 function Player() {
   const [musics, setMusics] = useState([]);

@@ -19,7 +19,7 @@ import { withRouter } from 'react-router-dom';
 import CardAlbum from '../../components/CardAlbum';
 import ENV from '../../constants/environment/common.env';
 
-const getAlbums = () => axios.get(`${ENV.localApiUrl}/get-albums`);
+const getAlbums = () => axios.get(`${ENV.apiUrl}/get-albums`);
 // const findArtist = value => axios.get(`${ENV.apiUrl}${RESOURCE}/findArtist=${value}`)
 const findArtist = (value = 2000) =>
   new Promise(function (resolve, reject) {
