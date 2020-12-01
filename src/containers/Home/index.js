@@ -19,6 +19,8 @@ import { withRouter } from 'react-router-dom';
 import CardAlbum from '../../components/CardAlbum';
 import ENV from '../../constants/environment/common.env';
 
+import './index.scss';
+
 const getAlbums = () => axios.get(`${ENV.apiUrl}/get-albums`);
 // const findArtist = value => axios.get(`${ENV.apiUrl}${RESOURCE}/findArtist=${value}`)
 const findArtist = (value = 2000) =>
@@ -52,9 +54,8 @@ function Home(props) {
   };
 
   return (
-    <div>
-      <h1>Home Page + recherche</h1>
-      <p>The Home Page is accessible by every user.</p>
+    <div id="Home">
+      <h1 className="text-white">Home Page</h1>
       <Container style={{ padding: '5%', textAlign: 'left' }} fluid>
         <Form>
           <FormGroup>
@@ -68,7 +69,7 @@ function Home(props) {
         </Form>
         <Row>
           <Col xs={12} className="pt-6 pb-4">
-            <h1>Les derniers ajouts</h1>
+            <h1 className="text-white">Les derniers ajouts</h1>
           </Col>
           <Col xl="4" className="pb-3" onClick={() => history.push(`/player/all`)} role="button">
             <CardAlbum title="Tous" />
