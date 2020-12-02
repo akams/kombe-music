@@ -13,7 +13,7 @@ function Player() {
 
   useEffect(() => {
     async function fetch() {
-      const param = { params: { idAlbum } };
+      const param = { params: { idAlbum, limit: idAlbum === 'all' ? 100 : 10 } };
       const res = await getMusics(param);
       setMusics(res.data);
     }
