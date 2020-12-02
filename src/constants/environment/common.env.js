@@ -8,4 +8,7 @@ const environment = {
   apiUrl: `${env === 'DEV' ? localApi : prodApi}/kombeMusicCF/api/v1`,
 };
 
+console.log('env', env);
+console.log('apiUrl', environment.apiUrl);
+
 export default environment;
