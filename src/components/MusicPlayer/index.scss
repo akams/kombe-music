@@ -120,6 +120,12 @@ $transition: .3s all ease;
       height: 180px;
       overflow-y: scroll;
       overflow-x: hidden;
+
+      .styleContentScroll {
+        display: flex;
+        justify-content: center;
+      }
+
       .track{
         display: flex;
         align-items: center;

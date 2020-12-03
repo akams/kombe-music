@@ -16,6 +16,7 @@ import './assets/vendor/font-awesome/css/font-awesome.min.css';
 import './assets/scss/argon-dashboard-react.scss';
 import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 
 export const myStore = configureStore();
 

@@ -278,6 +278,7 @@ class Player extends Component {
               playing={playing}
               played={played}
               duration={duration}
+              {...this.props}
             />
           )}
         </div>
