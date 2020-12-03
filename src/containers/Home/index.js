@@ -1,51 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import {
-  Container,
-  Form,
-  FormGroup,
-  Label,
-  Input,
-  Button,
-  InputGroup,
-  Row,
-  Col,
-  ListGroup,
-  ListGroupItem,
-} from 'reactstrap';
-import { compose } from 'recompose';
-import { withRouter } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Container, Form, FormGroup, Label, Input, InputGroup, Row, Col } from 'reactstrap';
 
 import CardAlbum from '../../components/CardAlbum';
-import ENV from '../../constants/environment/common.env';
 
 import './index.scss';
 
-const getAlbums = () => axios.get(`${ENV.apiUrl}/get-albums`);
-// const findArtist = value => axios.get(`${ENV.apiUrl}${RESOURCE}/findArtist=${value}`)
-const findArtist = (value = 2000) =>
-  new Promise(function (resolve, reject) {
-    setTimeout(resolve, value);
-  }).then(function () {
-    console.log(`Wrapped setTimeout after ${value}ms`);
-  });
-
 function Home(props) {
-  const { history } = props;
+  const { history, albums } = props;
   const [title, setTitle] = useState('');
-  const [musicalcategorie, setMusicalCategorie] = useState([]);
-
-  useEffect(() => {
-    async function fetch() {
-      const res = await getAlbums();
-      setMusicalCategorie(res.data);
-    }
-    fetch();
-  }, []);
 
   const onChange = (event) => {
     const { value } = event.target;
-    setTitle(event.target.value);
+    setTitle(value);
     // findArtist(value)
     //   .then((res) => {
     //     console.warn({ res });
@@ -74,15 +40,18 @@ function Home(props) {
           <Col xl="4" className="pb-3" onClick={() => history.push(`/player/all`)} role="button">
             <CardAlbum title="Tous" />
           </Col>
-          {musicalcategorie.map((m, index) => (
+          {albums.map((m, index) => (
             <Col xl="4" key={index} className="pb-3" onClick={() => history.push(`/player/${m.id}`)} role="button">
               <CardAlbum title={m.name} />
             </Col>
           ))}
+          <Col xl="4" className="pb-3" onClick={() => history.push(`/albums`)} role="button">
+            <CardAlbum title="Voir +" />
+          </Col>
         </Row>
       </Container>
     </div>
   );
 }
 
-export default compose(withRouter)(Home);
+export default Home;
