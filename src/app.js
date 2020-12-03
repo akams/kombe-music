@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 
-import { HomePage, SigninPage, SignupPage, SignupEnd, NotFound, Player } from './pages';
+import { HomePage, SigninPage, SignupPage, SignupEnd, NotFound, Player, Albums } from './pages';
 import * as ROUTES from './constants/routes';
 import { IsUserRedirect, ProtectedRoute, UnProtectedRoute } from './helpers/routes';
 import { withFirebase } from './context/firebase';
@@ -39,8 +39,11 @@ function App(props) {
         <UnProtectedRoute exact path={ROUTES.HOME}>
           <HomePage />
         </UnProtectedRoute>
-        <UnProtectedRoute exact path={ROUTES.PLAYER}>
+        <UnProtectedRoute path={ROUTES.PLAYER}>
           <Player />
+        </UnProtectedRoute>
+        <UnProtectedRoute path={ROUTES.ALBUMS}>
+          <Albums />
         </UnProtectedRoute>
         <Route path="*" component={NotFound} />
       </Switch>
