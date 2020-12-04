@@ -28,6 +28,16 @@ function Zoo(props) {
     }
   };
 
+  const deleteAnimal = async ({ objectID }) => {
+    try {
+      console.log('delete', { objectID });
+      const ref = firebase.firestore.collection('zoo');
+      await ref.doc(objectID).delete();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const CustomHighlight = connectHighlight(({ highlight, attribute, hit }) => {
     const parsedHit = highlight({
       highlightProperty: '_highlightResult',
@@ -38,9 +48,14 @@ function Zoo(props) {
     console.log({ parsedHit });
     return (
       <span>
-        {parsedHit.map((part, index) =>
-          part.isHighlighted ? <mark key={index}>{part.value}</mark> : <span key={index}>{part.value}</span>
-        )}
+        {parsedHit.map((part, index) => (
+          <div>
+            {part.isHighlighted ? <mark key={index}>{part.value}</mark> : <span key={index}>{part.value}</span>}
+            <button key={`b-${index}`} type="button" onClick={() => deleteAnimal(hit)}>
+              delete animal
+            </button>
+          </div>
+        ))}
       </span>
     );
   });
