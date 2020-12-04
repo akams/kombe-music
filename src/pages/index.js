@@ -5,3 +5,4 @@ export { default as SignupEnd } from './SignupEnd';
 export { default as NotFound } from './NotFound';
 export { default as Player } from './Player';
 export { default as Albums } from './Albums';
+export { default as ZooPage } from './Zoo';
