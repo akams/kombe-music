@@ -6,3 +6,4 @@ export { default as NotFound } from './NotFound';
 export { default as Player } from './Player';
 export { default as Albums } from './Albums';
 export { default as ZooPage } from './Zoo';
+export { default as Search } from './Search';

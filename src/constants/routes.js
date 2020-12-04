@@ -11,6 +11,7 @@ export const PLAYER = '/player/:idAlbum';
 export const ALBUMS = '/albums';
 export const TEST_ALGOLIA = '/zoo-page';
 export const PASSWORD_FORGET = '/pw-forget';
+export const SEARCH = '/recherche';
 
 export const IN_APP_ROUTES = [
   {
@@ -24,7 +25,7 @@ export const IN_APP_ROUTES = [
     icon: (className) => <IoIosAlbums className={className} />,
   },
   {
-    path: TEST_ALGOLIA,
+    path: SEARCH,
     name: 'Recherche',
     icon: (className) => <FaSearch className={className} />,
   },
