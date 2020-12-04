@@ -226,6 +226,7 @@ class Player extends Component {
               onProgress={this.handleProgress}
               onDuration={this.handleDuration}
             />
+            <span className="album-name">{currentSong.albumName}</span>
             <div className="img-wrap">
               {currentSong.imgUrl ? (
                 <img src={currentSong.imgUrl} alt="img song" />
