@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import { HomePage, SigninPage, SignupPage, SignupEnd, NotFound, Player, Albums, ZooPage } from './pages';
 import * as ROUTES from './constants/routes';
-import { IsUserRedirect, ProtectedRoute, UnProtectedRoute } from './helpers/routes';
+import { IsUserRedirect, UnProtectedRoute } from './helpers/routes';
 import { withFirebase } from './context/firebase';
 import { useAuthListener } from './hooks';
 import { dispatchSetUsers } from './redux/action/user';
@@ -37,16 +37,16 @@ function App(props) {
           <SignupEnd dispatch={dispatch} />
         </UnProtectedRoute>
         <UnProtectedRoute exact path={ROUTES.HOME}>
-          <HomePage />
+          <HomePage IN_APP_ROUTES={ROUTES.IN_APP_ROUTES} />
         </UnProtectedRoute>
         <UnProtectedRoute path={ROUTES.PLAYER}>
-          <Player />
+          <Player IN_APP_ROUTES={ROUTES.IN_APP_ROUTES} />
         </UnProtectedRoute>
         <UnProtectedRoute path={ROUTES.ALBUMS}>
-          <Albums />
+          <Albums IN_APP_ROUTES={ROUTES.IN_APP_ROUTES} />
         </UnProtectedRoute>
         <UnProtectedRoute path={ROUTES.TEST_ALGOLIA}>
-          <ZooPage />
+          <ZooPage IN_APP_ROUTES={ROUTES.IN_APP_ROUTES} />
         </UnProtectedRoute>
         <Route path="*" component={NotFound} />
       </Switch>

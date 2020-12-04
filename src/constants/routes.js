@@ -1,15 +1,31 @@
+/* eslint-disable react/display-name */
+import { AiFillHome } from 'react-icons/ai';
+import { IoIosAlbums } from 'react-icons/io';
+import { FaSearch } from 'react-icons/fa';
+
 export const SIGN_IN = '/signin';
 export const SIGN_UP = '/signup';
 export const SIGN_UP_END = '/confirmation-inscription';
-export const LANDING = '/';
 export const HOME = '/';
-export const ACCOUNT = '/account';
-export const ADMIN = '/admin';
-export const PASSWORD_FORGET = '/pw-forget';
 export const PLAYER = '/player/:idAlbum';
 export const ALBUMS = '/albums';
 export const TEST_ALGOLIA = '/zoo-page';
+export const PASSWORD_FORGET = '/pw-forget';
 
-export const UPDLOAD_FILES = '/upload-file';
-
-export const ARTIST_SIGN_UP = `/artist${SIGN_UP}`;
+export const IN_APP_ROUTES = [
+  {
+    path: HOME,
+    name: 'Accueil',
+    icon: (className) => <AiFillHome className={className} />,
+  },
+  {
+    path: ALBUMS,
+    name: 'Albums',
+    icon: (className) => <IoIosAlbums className={className} />,
+  },
+  {
+    path: TEST_ALGOLIA,
+    name: 'Recherche',
+    icon: (className) => <FaSearch className={className} />,
+  },
+];

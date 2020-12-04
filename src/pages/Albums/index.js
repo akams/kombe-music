@@ -5,12 +5,14 @@ import axios from 'axios';
 import { withFirebase } from '../../context/firebase';
 
 import AlbumsContainer from '../../containers/Albums';
+import SideBar from '../../components/SideBar';
 
 import ENV from '../../constants/environment/common.env';
 
 const getAlbums = (payload) => axios.get(`${ENV.apiUrl}/get-albums`, payload);
 
 function Albums(props) {
+  const { IN_APP_ROUTES } = props;
   const [albums, setAlbums] = useState([]);
   useEffect(() => {
     async function fetch() {
@@ -20,7 +22,15 @@ function Albums(props) {
     }
     fetch();
   }, []);
-  return <AlbumsContainer albums={albums} {...props} />;
+  console.log({ props });
+  return (
+    <>
+      <SideBar routes={IN_APP_ROUTES} {...props} />
+      <div className="main-content">
+        <AlbumsContainer albums={albums} {...props} />
+      </div>
+    </>
+  );
 }
 
 export default compose(withFirebase, withRouter)(Albums);

@@ -2,10 +2,7 @@ import React, { Component } from 'react';
 import { NavLink as NavLinkRRD, withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
 import { Collapse, NavbarBrand, Navbar, NavItem, NavLink, Nav, Container, Row, Col } from 'reactstrap';
-import { connect } from 'react-redux';
 import { FaAngleUp, FaAngleDown } from 'react-icons/fa';
-import { getAuthorizationWithRoutes } from '../../services/auth.service';
-import { SideMenuUl as SideMenuUlComponent, SideMenuItemLi as SideMenuItemLiComponent } from './styles';
 import './styles/index.scss';
 
 class Sidebar extends Component {
@@ -17,9 +14,12 @@ class Sidebar extends Component {
       activeIndex: null,
     };
     this.toggleClass = this.toggleClass.bind(this);
+    this.setToggleCollapse = this.setToggleCollapse.bind(this);
+    this.closeCollapse = this.closeCollapse.bind(this);
   }
 
   setToggleCollapse(collapseOpen) {
+    console.log({ collapseOpen });
     this.setState({ collapseOpen });
   }
 
@@ -47,6 +47,7 @@ class Sidebar extends Component {
   }
 
   closeCollapse() {
+    console.log('here closeCollapse');
     this.setToggleCollapse(false);
   }
 
@@ -57,32 +58,19 @@ class Sidebar extends Component {
   createLinks(roads) {
     const {
       location: { pathname },
-      user,
     } = this.props;
-    // const { activeIndex } = this.state;
-    const updatedRoutes = getAuthorizationWithRoutes(user, roads);
-    return updatedRoutes.map((prop, key) => (
+    return roads.map((prop, key) => (
       <NavItem key={key}>
         <NavLink
           to={prop.path}
           tag={NavLinkRRD}
           onClick={() => {
             this.closeCollapse();
-            // this.toggleClass(key);
           }}
           activeClassName={prop.path === pathname ? 'active' : ''}
         >
           {prop.icon(prop.path === pathname ? 'text-primary icon-sidebar' : 'icon-sidebar')} {prop.name}
         </NavLink>
-        {/* 
-          <i className={`${prop.path === pathname ? `${prop.icon} text-primary` : `${prop.icon}`}`} />
-            <Collapse isOpen={activeIndex === key}>
-              <Sidebar.Ul>
-                <Sidebar.Li className="mt-1 mb-1">Page 1</Sidebar.Li>
-                <Sidebar.Li>Page 2</Sidebar.Li>
-              </Sidebar.Ul>
-            </Collapse>
-            */}
       </NavItem>
     ));
   }
@@ -100,10 +88,10 @@ class Sidebar extends Component {
           {/* Brand */}
           <NavbarBrand className="pt-0">
             <img
-              title="La Recharge Responsable"
-              alt="La Recharge Responsable"
+              title="Music traditionelle gabonaise"
+              alt="Music traditionelle gabonaise"
               className="navbar-brand-img"
-              src="https://waat.fr/wp-content/uploads/2018/05/logo-waat-v10-rvb.svg"
+              src=""
             />
           </NavbarBrand>
           {/* Collapse */}
@@ -113,10 +101,10 @@ class Sidebar extends Component {
               <Row>
                 <Col className="collapse-brand" xs="6">
                   <img
-                    title="La Recharge Responsable"
-                    alt="La Recharge Responsable"
+                    title="Music traditionelle gabonaise"
+                    alt="Music traditionelle gabonaise"
                     className="navbar-brand-img"
-                    src="https://waat.fr/wp-content/uploads/2018/05/logo-waat-v10-rvb.svg"
+                    src=""
                   />
                 </Col>
                 <Col className="collapse-close" xs="6">
@@ -136,16 +124,4 @@ class Sidebar extends Component {
   }
 }
 
-Sidebar.Ul = function SideMenuUl({ children, ...restProps }) {
-  return <SideMenuUlComponent {...restProps}>{children}</SideMenuUlComponent>;
-};
-Sidebar.Li = function SideMenuItemLi({ children, ...restProps }) {
-  return <SideMenuItemLiComponent {...restProps}>{children}</SideMenuItemLiComponent>;
-};
-
-const mapDispatchToProps = {};
-const mapStateToProps = (state) => ({
-  user: state.user,
-});
-
-export default compose(withRouter, connect(mapStateToProps, mapDispatchToProps))(Sidebar);
+export default compose(withRouter)(Sidebar);
