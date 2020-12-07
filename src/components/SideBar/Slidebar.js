@@ -12,9 +12,7 @@ function SideBar(props) {
     <SideNav
       className="Sidebar-fixe"
       expanded={expanded}
-      onToggle={(expan) => {
-        console.log({ expan });
-      }}
+      onToggle={() => {}}
       onSelect={(selected) => {
         const to = selected;
         if (pathname !== to) {

@@ -26,7 +26,6 @@ function Albums(props) {
     }
     fetch();
   }, []);
-  console.log({ props });
   return (
     <>
       <SideBar routes={IN_APP_ROUTES} {...props} />

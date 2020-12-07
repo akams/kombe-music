@@ -6,13 +6,13 @@ import CardAlbum from '../../components/CardAlbum';
 import './index.scss';
 
 function Albums(props) {
-  const { history, albums } = props;
+  const { history, albums = [] } = props;
 
   return (
-    <Container className="mt--7" fluid>
+    <Container fluid>
       <div id="Albums" className="w-100">
         <Row>
-          <Col xs={12} className="pt-8 pb-4">
+          <Col xs={12} className="pt-4 pb-4">
             <h1 className="text-white">Albums Page</h1>
           </Col>
           <Col xs={12} className="pt-4 pb-4">

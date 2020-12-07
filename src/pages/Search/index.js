@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
 import { compose } from 'recompose';
 import { withRouter } from 'react-router-dom';
@@ -16,7 +15,6 @@ function Search(props) {
   const { IN_APP_ROUTES } = props;
   const { width: widthScreen } = useWindowScreen();
   const isSmallDevice = widthScreen < 768;
-  console.log({ IN_APP_ROUTES });
   return (
     <>
       <SideBar routes={IN_APP_ROUTES} {...props} />

@@ -1,7 +1,16 @@
 
 #Search {
+  h1 {
+    border-bottom: 1px solid white;
+  }
   li {
     list-style: none;
+  }
+
+  .searchForm {
+    width: 100px !important;
+    background-color: initial !important;
+    color: white;
   }
 
   .ais-SearchBox {
@@ -19,8 +28,9 @@
   }
   
   .ais-InfiniteHits-item {
-    margin-bottom: 1em;
-    width: calc(50% - 1rem);
+    border-bottom: 1px solid white;
+    margin-bottom: 3em;
+    padding-bottom: 1em;
   }
   
   .ais-InfiniteHits-sentinel {

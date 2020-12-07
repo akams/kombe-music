@@ -7,7 +7,6 @@ function CustomNav(props) {
     location: { pathname },
     IN_APP_ROUTES,
   } = props;
-  console.log({ props });
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => setIsOpen(!isOpen);
@@ -29,7 +28,7 @@ function CustomNav(props) {
   return (
     <Navbar color="light" light expand="md">
       <Container fluid>
-        <NavbarBrand href="/">reactstrap</NavbarBrand>
+        <NavbarBrand href="/">Kombe-Music</NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <div className="navbar-collapse-header d-md-none">

@@ -28,4 +28,8 @@ main {
 .smallDevice {
   margin-left: 0px !important;
 }
+
+.cursorPointer{
+  cursor: pointer;
+}
 `;

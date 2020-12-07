@@ -16,7 +16,6 @@ function Player() {
 
   const fetchData = async () => {
     try {
-      console.log('Retrieving Data');
       const param = { params: { idAlbum } };
       const res = await getMusics(param);
       const { datas, last } = res.data;
@@ -29,7 +28,6 @@ function Player() {
 
   const fetchMoreData = async () => {
     try {
-      console.log('Retrieving additional Data');
       const param = { params: { idAlbum, lastVisible: lastDocument } };
       const res = await getMusics(param);
       const { datas, last } = res.data;

@@ -19,7 +19,6 @@ class InfiniteHits extends Component {
 
   onSentinelIntersection = (entries) => {
     const { hasMore, refine } = this.props;
-    console.log({ entries, refine, hasMore });
     entries.forEach((entry) => {
       if (entry.isIntersecting && hasMore) {
         refine();
