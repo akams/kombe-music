@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
 
 import { withFirebase } from '../../context/firebase';
+import { useWindowScreen } from '../../hooks';
 import HomeContainer from '../../containers/Home';
 import SideBar from '../../components/SideBar';
 
@@ -15,6 +16,8 @@ const getAlbums = () => axios.get(`${ENV.apiUrl}/get-albums`);
 function Home(props) {
   const { IN_APP_ROUTES } = props;
   const [albums, setAlbums] = useState([]);
+  const { width: widthScreen } = useWindowScreen();
+  const isSmallDevice = widthScreen < 768;
 
   useEffect(() => {
     async function fetch() {
@@ -27,9 +30,9 @@ function Home(props) {
   return (
     <>
       <SideBar routes={IN_APP_ROUTES} {...props} />
-      <div className="main-content">
+      <main className={isSmallDevice ? 'smallDevice' : ''}>
         <HomeContainer albums={albums} {...props} />
-      </div>
+      </main>
     </>
   );
 }

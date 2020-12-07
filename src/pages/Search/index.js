@@ -8,18 +8,21 @@ import SearchContainer from '../../containers/Search';
 import SideBar from '../../components/SideBar';
 
 import { withFirebase } from '../../context/firebase';
+import { useWindowScreen } from '../../hooks';
 
 const searchClient = algoliasearch(process.env.REACT_APP_ALGOLIA_APP_ID, process.env.REACT_APP_ALGOLIA_SEARCH_KEY);
 
 function Search(props) {
   const { IN_APP_ROUTES } = props;
+  const { width: widthScreen } = useWindowScreen();
+  const isSmallDevice = widthScreen < 768;
   console.log({ IN_APP_ROUTES });
   return (
     <>
       <SideBar routes={IN_APP_ROUTES} {...props} />
-      <div className="main-content">
+      <main className={isSmallDevice ? 'smallDevice' : ''}>
         <SearchContainer searchClient={searchClient} {...props} />
-      </div>
+      </main>
     </>
   );
 }

@@ -9,12 +9,14 @@ function Home(props) {
   const { history, albums } = props;
 
   return (
-    <div id="Home">
-      <h1 className="text-white">Home Page</h1>
-      <Container style={{ padding: '5%', textAlign: 'left' }} fluid>
+    <Container fluid>
+      <div id="Home" className="w-100">
         <Row>
-          <Col xs={12} className="pt-6 pb-4">
-            <h1 className="text-white">Les derniers ajouts</h1>
+          <Col xs={12} className="pt-4 pb-4">
+            <h1 className="text-white">Home Page</h1>
+          </Col>
+          <Col xs={12} className="pt-4 pb-4">
+            <h2 className="text-white">Les derniers ajouts</h2>
           </Col>
           <Col xl="4" className="pb-3" onClick={() => history.push(`/player/all`)} role="button">
             <CardAlbum title="Tous" />
@@ -28,8 +30,8 @@ function Home(props) {
             <CardAlbum title="Voir +" />
           </Col>
         </Row>
-      </Container>
-    </div>
+      </div>
+    </Container>
   );
 }
 

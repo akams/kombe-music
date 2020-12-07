@@ -1,0 +1,11 @@
+nav {
+  background: white !important;
+  min-width: 200px !important;
+  div, svg {
+    color: rgba(0,0,0,.5) !important;
+  }
+}
+
+nav.Sidebar-fixe {
+  position: fixed !important;
+}

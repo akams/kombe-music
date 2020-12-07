@@ -16,4 +16,16 @@ export const GlobalStyles = createGlobalStyle`
   color: #333333;
   font-size: 16px;
 }
+
+main {
+  position: relative;
+  overflow: hidden;
+  transition: all .15s;
+  padding: 0 20px;
+  margin-left: 200px;
+}
+
+.smallDevice {
+  margin-left: 0px !important;
+}
 `;

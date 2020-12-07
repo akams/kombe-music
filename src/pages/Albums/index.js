@@ -3,6 +3,7 @@ import { compose } from 'recompose';
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 import { withFirebase } from '../../context/firebase';
+import { useWindowScreen } from '../../hooks';
 
 import AlbumsContainer from '../../containers/Albums';
 import SideBar from '../../components/SideBar';
@@ -14,6 +15,9 @@ const getAlbums = (payload) => axios.get(`${ENV.apiUrl}/get-albums`, payload);
 function Albums(props) {
   const { IN_APP_ROUTES } = props;
   const [albums, setAlbums] = useState([]);
+  const { width: widthScreen } = useWindowScreen();
+  const isSmallDevice = widthScreen < 768;
+
   useEffect(() => {
     async function fetch() {
       const param = { params: { limit: 9 } };
@@ -26,9 +30,9 @@ function Albums(props) {
   return (
     <>
       <SideBar routes={IN_APP_ROUTES} {...props} />
-      <div className="main-content">
+      <main className={isSmallDevice ? 'smallDevice' : ''}>
         <AlbumsContainer albums={albums} {...props} />
-      </div>
+      </main>
     </>
   );
 }

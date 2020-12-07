@@ -17,6 +17,7 @@ import './assets/scss/argon-dashboard-react.scss';
 import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 
 export const myStore = configureStore();
 

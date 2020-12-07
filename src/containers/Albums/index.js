@@ -9,12 +9,14 @@ function Albums(props) {
   const { history, albums } = props;
 
   return (
-    <div id="Albums">
-      <h1 className="text-white">Albums Page</h1>
-      <Container style={{ padding: '5%', textAlign: 'left' }} fluid>
+    <Container className="mt--7" fluid>
+      <div id="Albums" className="w-100">
         <Row>
-          <Col xs={12} className="pt-6 pb-4">
-            <h1 className="text-white">Les derniers albums ajoutés</h1>
+          <Col xs={12} className="pt-8 pb-4">
+            <h1 className="text-white">Albums Page</h1>
+          </Col>
+          <Col xs={12} className="pt-4 pb-4">
+            <h2 className="text-white">Les derniers albums ajoutés</h2>
           </Col>
           {albums.map((m, index) => (
             <Col xl="4" key={index} className="pb-3" onClick={() => history.push(`/player/${m.id}`)} role="button">
@@ -22,8 +24,8 @@ function Albums(props) {
             </Col>
           ))}
         </Row>
-      </Container>
-    </div>
+      </div>
+    </Container>
   );
 }
 

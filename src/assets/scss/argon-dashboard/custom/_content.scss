@@ -1,6 +1,12 @@
 .main-content {
     position: relative;
 
+    width: 100%;
+    max-width: 1180px;
+    display: block;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+
     // Navbar
     .navbar-top {
         position: absolute;
