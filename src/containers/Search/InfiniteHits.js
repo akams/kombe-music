@@ -38,7 +38,7 @@ class InfiniteHits extends Component {
         <ul className="ais-InfiniteHits-list">
           {hits.map((hit) => (
             <li key={hit.objectID} className="ais-InfiniteHits-item">
-              <Hit hit={hit} />
+              <Hit hit={hit} {...this.props} />
             </li>
           ))}
           <li className={`ais-InfiniteHits-sentinel ${hideComponent}`} ref={(c) => (this.sentinel = c)} />

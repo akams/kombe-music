@@ -8,7 +8,7 @@ import CustomSearchBox from './SearchBox';
 import './index.scss';
 
 function Search(props) {
-  const { searchClient } = props;
+  const { searchClient, history } = props;
   return (
     <Container fluid="xl">
       <div id="Search" className="w-100">
@@ -21,7 +21,7 @@ function Search(props) {
               <div>
                 <Configure hitsPerPage={9} />
                 <CustomSearchBox />
-                <InfiniteHits minHitsPerPage={9} />
+                <InfiniteHits minHitsPerPage={9} history={history} />
               </div>
             </InstantSearch>
           </Col>

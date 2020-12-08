@@ -12,6 +12,9 @@ export const ALBUMS = '/albums';
 export const TEST_ALGOLIA = '/zoo-page';
 export const PASSWORD_FORGET = '/pw-forget';
 export const SEARCH = '/recherche';
+export const SEARCH_ALBUM = '/recherche/album/:albumName';
+export const SEARCH_AUTHOR = '/recherche/author/:author';
+export const SEARCH_MUSIC = '/recherche/music/:idMusic';
 
 export const IN_APP_ROUTES = [
   {

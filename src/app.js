@@ -45,11 +45,17 @@ function App(props) {
         <UnProtectedRoute path={ROUTES.ALBUMS}>
           <Albums IN_APP_ROUTES={ROUTES.IN_APP_ROUTES} />
         </UnProtectedRoute>
-        <UnProtectedRoute path={ROUTES.SEARCH}>
+        <UnProtectedRoute exact path={ROUTES.SEARCH}>
           <Search IN_APP_ROUTES={ROUTES.IN_APP_ROUTES} />
         </UnProtectedRoute>
-        <UnProtectedRoute path={ROUTES.TEST_ALGOLIA}>
-          <ZooPage IN_APP_ROUTES={ROUTES.IN_APP_ROUTES} />
+        <UnProtectedRoute path={ROUTES.SEARCH_MUSIC}>
+          <Player IN_APP_ROUTES={ROUTES.IN_APP_ROUTES} />
+        </UnProtectedRoute>
+        <UnProtectedRoute path={ROUTES.SEARCH_AUTHOR}>
+          <Player IN_APP_ROUTES={ROUTES.IN_APP_ROUTES} />
+        </UnProtectedRoute>
+        <UnProtectedRoute path={ROUTES.SEARCH_ALBUM}>
+          <Player IN_APP_ROUTES={ROUTES.IN_APP_ROUTES} />
         </UnProtectedRoute>
         <Route path="*" component={NotFound} />
       </Switch>

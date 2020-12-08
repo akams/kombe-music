@@ -18,7 +18,13 @@ const CustomHighlight = connectHighlight(({ highlight, attribute, hit }) => {
   if (attribute === 'author') {
     badge = (
       <span>
-        <Badge color="secondary">Autheur</Badge> -
+        <Badge color="secondary">Auteur</Badge> -
+      </span>
+    );
+  } else if (attribute === 'albumName') {
+    badge = (
+      <span>
+        <Badge color="secondary">Album</Badge> -
       </span>
     );
   }
@@ -42,7 +48,7 @@ const CustomHighlight = connectHighlight(({ highlight, attribute, hit }) => {
   );
 });
 
-const Hit = ({ hit }) => {
+const Hit = ({ hit, history }) => {
   const img = hit.imgUrl ? hit.imgUrl : junglePicture;
   const { width } = useWindowScreen();
   let colSize = 2;
@@ -54,7 +60,7 @@ const Hit = ({ hit }) => {
     colSize = 5;
   }
   return (
-    <Row>
+    <Row role="button" onClick={() => history.push(`/recherche/music/${hit.objectID}`)}>
       <Col xs={colSize}>
         <img width={100} height={100} src={img} align="left" alt={hit.name} />
       </Col>
@@ -63,7 +69,10 @@ const Hit = ({ hit }) => {
           <CustomHighlight attribute="name" hit={hit} />
         </div>
         <div className="hit-description">
-          <CustomHighlight attribute="author" hit={hit} />
+          <CustomHighlight attribute="author" hit={hit} history={history} />
+        </div>
+        <div className="hit-description">
+          <CustomHighlight attribute="albumName" hit={hit} history={history} />
         </div>
       </Col>
     </Row>
