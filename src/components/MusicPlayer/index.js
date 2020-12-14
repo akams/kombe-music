@@ -182,6 +182,8 @@ class Player extends Component {
       pip,
     } = this.state;
 
+    const { history } = this.props;
+
     let currentSong = musicList[index];
     const currentTime = duration * played;
 
@@ -235,7 +237,15 @@ class Player extends Component {
               )}
             </div>
             <span className="song-name">{currentSong.name}</span>
-            <span className="song-autor">{currentSong.author}</span>
+            <span
+              onClick={() => history.push(`/author/${currentSong.author}`)}
+              role="button"
+              tabIndex="0"
+              aria-hidden="true"
+              className="song-autor"
+            >
+              {currentSong.author}
+            </span>
 
             <div className="time">
               <div className="current-time">

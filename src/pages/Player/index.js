@@ -92,7 +92,7 @@ function Player(props) {
     <>
       <SideBar routes={IN_APP_ROUTES} {...props} />
       <main className={isSmallDevice ? 'smallDevice' : ''}>
-        <PlayerContainer musics={musics} hasMore={hasMore} fetchMoreDataFunction={fetchMoreData} />
+        <PlayerContainer musics={musics} hasMore={hasMore} fetchMoreDataFunction={fetchMoreData} {...props} />
       </main>
     </>
   );

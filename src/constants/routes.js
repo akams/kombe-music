@@ -16,6 +16,9 @@ export const SEARCH_ALBUM = '/recherche/album/:albumName';
 export const SEARCH_AUTHOR = '/recherche/author/:author';
 export const SEARCH_MUSIC = '/recherche/music/:idMusic';
 
+export const AUTHOR_MUSIC = '/author/:author';
+export const ALBUM_MUSIC = '/album/:albumName';
+
 export const IN_APP_ROUTES = [
   {
     path: HOME,

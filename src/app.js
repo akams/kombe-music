@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 
-import { HomePage, SigninPage, SignupPage, SignupEnd, NotFound, Player, Albums, ZooPage, Search } from './pages';
+import { HomePage, SigninPage, SignupPage, SignupEnd, NotFound, Player, Albums, Search, Author } from './pages';
 import * as ROUTES from './constants/routes';
 import { IsUserRedirect, UnProtectedRoute } from './helpers/routes';
 import { withFirebase } from './context/firebase';
@@ -51,8 +51,9 @@ function App(props) {
         <UnProtectedRoute path={ROUTES.SEARCH_MUSIC}>
           <Player IN_APP_ROUTES={ROUTES.IN_APP_ROUTES} />
         </UnProtectedRoute>
-        <UnProtectedRoute path={ROUTES.SEARCH_AUTHOR}>
-          <Player IN_APP_ROUTES={ROUTES.IN_APP_ROUTES} />
+        {/* Change routes */}
+        <UnProtectedRoute path={ROUTES.AUTHOR_MUSIC}>
+          <Author IN_APP_ROUTES={ROUTES.IN_APP_ROUTES} />
         </UnProtectedRoute>
         <UnProtectedRoute path={ROUTES.SEARCH_ALBUM}>
           <Player IN_APP_ROUTES={ROUTES.IN_APP_ROUTES} />
