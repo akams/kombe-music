@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 
-import { HomePage, SigninPage, SignupPage, SignupEnd, NotFound, Player, Albums, Search, Author } from './pages';
+import { NotFound } from './pages';
 import * as ROUTES from './constants/routes';
 import { IsUserRedirect, UnProtectedRoute } from './helpers/routes';
 import { withFirebase } from './context/firebase';
@@ -17,46 +17,10 @@ function App(props) {
   return user !== false ? (
     <Router>
       <Switch>
-        <IsUserRedirect
-          user={user}
-          confirmEmailVerifiedPath={ROUTES.SIGN_UP_END}
-          loggedInPath={ROUTES.HOME}
-          path={ROUTES.SIGN_IN}
-        >
-          <SigninPage dispatch={dispatch} />
-        </IsUserRedirect>
-        <IsUserRedirect
-          user={user}
-          confirmEmailVerifiedPath={ROUTES.SIGN_UP_END}
-          loggedInPath={ROUTES.HOME}
-          path={ROUTES.SIGN_UP}
-        >
-          <SignupPage dispatch={dispatch} />
-        </IsUserRedirect>
         <UnProtectedRoute path={ROUTES.SIGN_UP_END}>
-          <SignupEnd dispatch={dispatch} />
-        </UnProtectedRoute>
-        <UnProtectedRoute exact path={ROUTES.HOME}>
-          <HomePage IN_APP_ROUTES={ROUTES.IN_APP_ROUTES} />
-        </UnProtectedRoute>
-        <UnProtectedRoute path={ROUTES.PLAYER}>
-          <Player IN_APP_ROUTES={ROUTES.IN_APP_ROUTES} />
-        </UnProtectedRoute>
-        <UnProtectedRoute path={ROUTES.ALBUMS}>
-          <Albums IN_APP_ROUTES={ROUTES.IN_APP_ROUTES} />
-        </UnProtectedRoute>
-        <UnProtectedRoute exact path={ROUTES.SEARCH}>
-          <Search IN_APP_ROUTES={ROUTES.IN_APP_ROUTES} />
-        </UnProtectedRoute>
-        <UnProtectedRoute path={ROUTES.SEARCH_MUSIC}>
-          <Player IN_APP_ROUTES={ROUTES.IN_APP_ROUTES} />
-        </UnProtectedRoute>
-        {/* Change routes */}
-        <UnProtectedRoute path={ROUTES.AUTHOR_MUSIC}>
-          <Author IN_APP_ROUTES={ROUTES.IN_APP_ROUTES} />
-        </UnProtectedRoute>
-        <UnProtectedRoute path={ROUTES.SEARCH_ALBUM}>
-          <Player IN_APP_ROUTES={ROUTES.IN_APP_ROUTES} />
+          <div>
+            <h1>Hello</h1>
+          </div>
         </UnProtectedRoute>
         <Route path="*" component={NotFound} />
       </Switch>
