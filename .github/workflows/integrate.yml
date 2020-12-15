@@ -61,8 +61,7 @@ jobs:
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
         with:
-          args: hosting:channel:deploy release-test3-v${{PACKAGE_VERSION}}.0.0
+          args: hosting:channel:deploy release-test3-v${PACKAGE_VERSION}.0.0
           #args: deploy --only hosting
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-          PACKAGE_VERSION: ${{ PACKAGE_VERSION }}
