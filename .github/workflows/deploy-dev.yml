@@ -1,0 +1,46 @@
+name: Firebase Continuous Deployment Dev Env
+
+on:
+  push:
+    branches: [ dev_deploy, develop ]
+
+jobs:
+  deploy: 
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@master
+      - name: create env file
+        run: |
+          touch .env
+          echo REACT_APP_API_KEY =${{ secrets.REACT_APP_API_KEY }} >> .env
+          echo REACT_APP_AUTH_DOMAIN =${{ secrets.REACT_APP_AUTH_DOMAIN }} >> .env
+          echo REACT_APP_PROJECT_ID =${{ secrets.REACT_APP_PROJECT_ID }} >> .env
+          echo REACT_APP_STORAGE_BUCKET =${{ secrets.REACT_APP_STORAGE_BUCKET }} >> .env
+          echo REACT_APP_MESSAGING_SENDER_ID =${{ secrets.REACT_APP_MESSAGING_SENDER_ID }} >> .env
+          echo REACT_APP_APP_ID =${{ secrets.REACT_APP_APP_ID }} >> .env
+          echo REACT_APP_MEASUREMENT_ID =${{ secrets.REACT_APP_MEASUREMENT_ID }} >> .env
+      - name: set environment variables package version
+        run: |
+          export PACKAGE_VERSION=$(cat package.json | grep version | head -1 | awk -F= "{ print $2 }" | sed 's/[version:,\",]//g' | tr -d '[[:space:]]') 
+          echo "::set-env name=PACKAGE_VERSION::$PACKAGE_VERSION"
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+      - name: show package version
+        run: echo "PACKAGE_VERSION=${PACKAGE_VERSION}"
+      - name: Setup node
+        uses: actions/setup-node@master
+        with:
+          node-version: 12
+      - name: Install Dependencies
+        run: npm ci
+      - name: Build
+        run: npm run build
+      - name: Deploy to Firebase
+        uses: w9jds/firebase-action@master
+        with:
+          args: hosting:channel:deploy releasev${PACKAGE_VERSION}
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
