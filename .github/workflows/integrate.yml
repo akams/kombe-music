@@ -39,17 +39,22 @@ jobs:
           echo REACT_APP_MESSAGING_SENDER_ID =${{ secrets.REACT_APP_MESSAGING_SENDER_ID }} >> .env
           echo REACT_APP_APP_ID =${{ secrets.REACT_APP_APP_ID }} >> .env
           echo REACT_APP_MEASUREMENT_ID =${{ secrets.REACT_APP_MEASUREMENT_ID }} >> .env
-      - name: export package version
+      # - name: export package version
+      #   run: |
+      #     export PACKAGE_VERSION=$(cat package.json | grep version | head -1 | awk -F= "{ print $2 }" | sed 's/[version:,\",]//g' | tr -d '[[:space:]]') 
+      # - name: set environment variables package version
+      #   uses: allenevans/set-env@v2.0.0
+      #   run: |
+      #     export PACKAGE_VERSION=$(cat package.json | grep version | head -1 | awk -F= "{ print $2 }" | sed 's/[version:,\",]//g' | tr -d '[[:space:]]') 
+      #     echo "::set-env name=PACKAGE_VERSION::$PACKAGE_VERSION"
+      #   with:
+      #     PACKAGE_VERSION: $PACKAGE_VERSION
+      - name: set environment variables package version
         run: |
           export PACKAGE_VERSION=$(cat package.json | grep version | head -1 | awk -F= "{ print $2 }" | sed 's/[version:,\",]//g' | tr -d '[[:space:]]') 
-      - name: set environment variables package version
-        uses: allenevans/set-env@v2.0.0
-        with:
-          PACKAGE_VERSION: $PACKAGE_VERSION
+          echo "::set-env name=PACKAGE_VERSION::$PACKAGE_VERSION"
       - name: show package version
-        run: |
-          echo "PACKAGE_VERSION=${PACKAGE_VERSION}"
-          printenv
+        run: echo "PACKAGE_VERSION=${PACKAGE_VERSION}"
       - name: Setup node
         uses: actions/setup-node@master
         with:
