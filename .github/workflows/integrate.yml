@@ -47,7 +47,9 @@ jobs:
         with:
           PACKAGE_VERSION: $PACKAGE_VERSION
       - name: show package version
-        run: echo $PACKAGE_VERSION
+        run: |
+          echo "PACKAGE_VERSION=${PACKAGE_VERSION}"
+          printenv
       - name: Setup node
         uses: actions/setup-node@master
         with:
@@ -59,7 +61,7 @@ jobs:
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
         with:
-          args: hosting:channel:deploy release-test3-v${PACKAGE_VERSION}.0.0
+          args: hosting:channel:deploy release-test3-v${{PACKAGE_VERSION}}.0.0
           #args: deploy --only hosting
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
