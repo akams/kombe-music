@@ -39,6 +39,12 @@ jobs:
           echo REACT_APP_MESSAGING_SENDER_ID =${{ secrets.REACT_APP_MESSAGING_SENDER_ID }} >> .env
           echo REACT_APP_APP_ID =${{ secrets.REACT_APP_APP_ID }} >> .env
           echo REACT_APP_MEASUREMENT_ID =${{ secrets.REACT_APP_MEASUREMENT_ID }} >> .env
+      - name: get package version
+        run: |
+          export PACKAGE_VERSION=$(cat package.json | grep version | head -1 | awk -F= "{ print $2 }" | sed 's/[version:,\",]//g' | tr -d '[[:space:]]') 
+          echo "::set-env name=PACKAGE_VERSION::$PACKAGE_VERSION"
+      - name: show package version
+        run: echo $PACKAGE_VERSION
       - name: Setup node
         uses: actions/setup-node@master
         with:
@@ -50,7 +56,7 @@ jobs:
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
         with:
-          args: hosting:channel:deploy release-test2.0.0
+          args: hosting:channel:deploy release-test3-v${PACKAGE_VERSION}.0.0
           #args: deploy --only hosting
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
