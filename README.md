@@ -1,3 +1,14 @@
+## Design Inspiration
+
+https://www.behance.net/gallery/111034515/MUSIC-SQUIRREL-UI-UX?tracking_source=search_projects_recommended%7Cplayer
+
+Pour djoey_fit:
+
+https://dribbble.com/shots/14488137-Kenga-Mobile-App
+https://dribbble.com/shots/10031725-Fitness-Sport-Merchandise-App
+https://dribbble.com/shots/11007195-Activity-Tracker-App
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 NODE > 8.X.X
